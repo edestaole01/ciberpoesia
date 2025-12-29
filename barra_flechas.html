@@ -11,69 +11,39 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            font-family: Arial, sans-serif;
             background: #FFFFFF;
         }
         
-        /* Controles fixos */
+        /* Controles */
         .controls {
             position: fixed;
             top: 15px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 10px;
+            gap: 8px;
             z-index: 10000;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             padding: 10px 20px;
             border-radius: 50px;
-            backdrop-filter: blur(10px);
         }
         
-        .btn-control {
-            background-color: #FF6633;
+        .btn {
+            background: #FF6633;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
+            padding: 8px 16px;
+            border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            font-size: 13px;
+            transition: all 0.2s;
         }
         
-        .btn-control:hover {
-            background-color: #FF5522;
-            transform: scale(1.05);
-        }
+        .btn:hover { background: #FF5522; transform: scale(1.05); }
         
-        /* Título flutuante */
-        .poem-title {
-            position: fixed;
-            top: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 2rem;
-            color: #333;
-            background: rgba(255,255,255,0.95);
-            padding: 10px 30px;
-            border-radius: 30px;
-            z-index: 9999;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-        }
-        
-        .poem-title.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        /* Container do player - OCUPA TELA TODA */
-        #player-container {
+        /* Container ZOOM */
+        #player-wrapper {
             position: absolute;
             top: 0;
             left: 0;
@@ -82,46 +52,42 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
             background: #FFFFFF;
         }
         
-        /* Player Flash - ESCALADO PARA PREENCHER */
+        /* Player com ZOOM CSS */
         #player {
-            width: 100%;
-            height: 100%;
+            transform-origin: center center;
+            transition: transform 0.3s ease;
         }
         
-        #player ruffle-player {
-            width: 100% !important;
-            height: 100% !important;
-        }
+        /* Zoom levels via classes */
+        #player.zoom-1 { transform: scale(1.5); }
+        #player.zoom-2 { transform: scale(2.0); }
+        #player.zoom-3 { transform: scale(2.5); }
+        #player.zoom-4 { transform: scale(3.0); }
+        #player.zoom-max { transform: scale(4.0); }
         
         /* Tela de início */
         .start-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 100%);
+            inset: 0;
+            background: linear-gradient(135deg, #FFFFFF, #FFF);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 9998;
-            transition: opacity 0.5s ease;
+            z-index: 9999;
+            transition: opacity 0.5s;
         }
         
-        .start-screen.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
+        .start-screen.hidden { opacity: 0; pointer-events: none; }
         
         .start-title {
             font-size: 4rem;
             color: #333;
             margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
         
         .start-btn {
@@ -130,231 +96,199 @@
             border: none;
             padding: 25px 60px;
             border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
             font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
             box-shadow: 0 10px 30px rgba(255,102,51,0.4);
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
         
-        .start-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 15px 40px rgba(255,102,51,0.6);
-        }
+        .start-btn:hover { transform: scale(1.1); }
         
-        .start-info {
+        .info {
             margin-top: 30px;
             color: #666;
             font-size: 1.1rem;
             text-align: center;
-            max-width: 600px;
-            padding: 0 20px;
         }
         
-        /* Loading */
-        .loading {
-            text-align: center;
-            color: #666;
-            font-size: 2rem;
-        }
-        
-        /* Info flutuante */
-        .info-float {
+        /* Zoom indicator */
+        .zoom-indicator {
             position: fixed;
             bottom: 20px;
-            right: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             background: rgba(0,0,0,0.8);
             color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
             z-index: 9999;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s;
         }
         
-        .info-float.show {
-            opacity: 1;
-        }
+        .zoom-indicator.show { opacity: 1; }
         
-        /* Responsivo */
         @media (max-width: 768px) {
             .start-title { font-size: 2.5rem; }
             .start-btn { font-size: 1.3rem; padding: 20px 40px; }
-            .controls { 
-                flex-direction: column;
-                gap: 5px;
-                padding: 8px 15px;
-            }
-            .poem-title { font-size: 1.5rem; top: 80px; }
+            .controls { flex-direction: column; gap: 5px; }
         }
     </style>
 </head>
 <body>
     <!-- Controles -->
     <div class="controls">
-        <a href="index.html" class="btn-control">
-            <span>🏠</span> Início
-        </a>
-        <button class="btn-control" onclick="toggleFullscreen()" id="fullscreenBtn">
-            <span>⛶</span> Tela Cheia
-        </button>
-        <button class="btn-control" onclick="toggleTitle()">
-            <span>👁️</span> Título
-        </button>
+        <a href="index.html" class="btn">🏠 Início</a>
+        <button class="btn" onclick="zoomIn()">🔍 Mais Zoom</button>
+        <button class="btn" onclick="zoomOut()">🔍 Menos Zoom</button>
+        <button class="btn" onclick="resetZoom()">↺ Reset</button>
+        <button class="btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
     </div>
     
-    <!-- Título (pode esconder) -->
-    <h1 class="poem-title" id="poemTitle">Barra_Flechas</h1>
-    
-    <!-- Tela de início -->
+    <!-- Início -->
     <div class="start-screen" id="startScreen">
         <h1 class="start-title">Barra_Flechas</h1>
-        <button class="start-btn" id="startBtn">▶ INICIAR POEMA</button>
-        <div class="start-info">
-            <strong>Dica:</strong> Use "Tela Cheia" para melhor experiência<br>
-            Atalhos: <kbd>F</kbd> = Tela cheia · <kbd>ESC</kbd> = Sair
+        <button class="start-btn" onclick="startPoem()">▶ INICIAR</button>
+        <div class="info">
+            <strong>Controles:</strong><br>
+            Use os botões de zoom para ajustar o tamanho<br>
+            Scroll do mouse também funciona!
         </div>
     </div>
     
-    <!-- Player Flash -->
-    <div id="player-container">
-        <div id="player">
-            <div class="loading">⏳ Carregando...</div>
-        </div>
+    <!-- Player -->
+    <div id="player-wrapper">
+        <div id="player"></div>
     </div>
     
-    <!-- Info flutuante -->
-    <div class="info-float" id="infoFloat"></div>
+    <!-- Indicador de zoom -->
+    <div class="zoom-indicator" id="zoomIndicator">Zoom: 100%</div>
 
     <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
     
     <script>
-        let titleVisible = true;
+        let currentZoom = 0; // 0=normal, 1-4=zoom levels
+        let customScale = 1.0;
         
-        // Iniciar poema
-        document.getElementById('startBtn').addEventListener('click', function() {
-            this.disabled = true;
-            this.textContent = '⏳ Carregando...';
-            
-            setTimeout(() => {
-                document.getElementById('startScreen').classList.add('hidden');
-                loadFlash();
-                
-                // Esconder título após 3 segundos
-                setTimeout(() => {
-                    document.getElementById('poemTitle').classList.add('hidden');
-                    titleVisible = false;
-                    showInfo('💡 Pressione F para tela cheia');
-                }, 3000);
-            }, 800);
-        });
+        function startPoem() {
+            document.getElementById('startScreen').classList.add('hidden');
+            setTimeout(loadFlash, 500);
+        }
         
-        // Carregar Flash ESCALADO
         function loadFlash() {
-            try {
-                const swfData = "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";
-                const binaryString = atob(swfData);
-                const len = binaryString.length;
-                const bytes = new Uint8Array(len);
-                
-                for (let i = 0; i < len; i++) {
-                    bytes[i] = binaryString.charCodeAt(i);
-                }
-
-                const ruffle = window.RufflePlayer.newest();
-                const player = ruffle.createPlayer();
-                const container = document.getElementById("player");
-                container.innerHTML = '';
-                container.appendChild(player);
-
-                // CONFIGURAÇÕES PARA ESCALAR O FLASH
-                player.load({
-                    data: bytes,
-                    allowScriptAccess: true,
-                    autoplay: "on",
-                    unmuteOverlay: "hidden",
-                    backgroundColor: "#FFFFFF",
-                    letterbox: "off",  // DESLIGA LETTERBOX
-                    scale: "exactFit", // FORÇA AJUSTE EXATO
-                    quality: "high",
-                    warnOnUnsupportedContent: false,
-                    upgradeToHttps: false
-                });
-                
-                // Força CSS para garantir 100%
-                player.style.width = '100%';
-                player.style.height = '100%';
-                
-                console.log('✅ Flash carregado em tela cheia!');
-                
-            } catch (error) {
-                console.error('❌ Erro:', error);
-                document.getElementById("player").innerHTML = 
-                    '<div class="loading" style="color: red;">❌ Erro. Recarregue (F5)</div>';
-            }
-        }
-        
-        // Tela cheia
-        function toggleFullscreen() {
-            const elem = document.documentElement;
-            const btn = document.getElementById('fullscreenBtn');
+            const swfData = "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";
+            const binaryString = atob(swfData);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
             
-            if (!document.fullscreenElement) {
-                elem.requestFullscreen().then(() => {
-                    btn.innerHTML = '<span>⊗</span> Sair';
-                    showInfo('✅ Modo tela cheia ativado');
-                }).catch(err => {
-                    showInfo('❌ Erro ao ativar tela cheia');
-                });
-            } else {
-                document.exitFullscreen().then(() => {
-                    btn.innerHTML = '<span>⛶</span> Tela Cheia';
-                });
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
             }
-        }
-        
-        // Mostrar/esconder título
-        function toggleTitle() {
-            const title = document.getElementById('poemTitle');
-            titleVisible = !titleVisible;
             
-            if (titleVisible) {
-                title.classList.remove('hidden');
-                showInfo('👁️ Título visível');
-            } else {
-                title.classList.add('hidden');
-                showInfo('👁️ Título oculto');
-            }
-        }
-        
-        // Mostrar info temporária
-        function showInfo(text) {
-            const info = document.getElementById('infoFloat');
-            info.textContent = text;
-            info.classList.add('show');
+            const ruffle = window.RufflePlayer.newest();
+            const player = ruffle.createPlayer();
+            const container = document.getElementById("player");
+            container.appendChild(player);
             
+            player.load({
+                data: bytes,
+                allowScriptAccess: true,
+                autoplay: "on",
+                unmuteOverlay: "hidden",
+                backgroundColor: "#FFFFFF",
+                letterbox: "on",
+                quality: "high"
+            });
+            
+            // Auto-zoom inicial para 200%
             setTimeout(() => {
-                info.classList.remove('show');
-            }, 3000);
+                setZoom(2);
+                showZoomIndicator('🔍 Zoom automático: 200%');
+            }, 1000);
         }
+        
+        function setZoom(level) {
+            const player = document.getElementById('player');
+            player.className = ''; // Remove classes
+            
+            if (level === 0) {
+                customScale = 1.0;
+            } else if (level === 1) {
+                player.classList.add('zoom-1');
+                customScale = 1.5;
+            } else if (level === 2) {
+                player.classList.add('zoom-2');
+                customScale = 2.0;
+            } else if (level === 3) {
+                player.classList.add('zoom-3');
+                customScale = 2.5;
+            } else if (level === 4) {
+                player.classList.add('zoom-4');
+                customScale = 3.0;
+            } else if (level >= 5) {
+                player.classList.add('zoom-max');
+                customScale = 4.0;
+            }
+            
+            currentZoom = level;
+            showZoomIndicator(`Zoom: ${Math.round(customScale * 100)}%`);
+        }
+        
+        function zoomIn() {
+            if (currentZoom < 5) {
+                setZoom(currentZoom + 1);
+            } else {
+                showZoomIndicator('⚠️ Zoom máximo!');
+            }
+        }
+        
+        function zoomOut() {
+            if (currentZoom > 0) {
+                setZoom(currentZoom - 1);
+            } else {
+                showZoomIndicator('⚠️ Zoom mínimo!');
+            }
+        }
+        
+        function resetZoom() {
+            setZoom(0);
+        }
+        
+        function showZoomIndicator(text) {
+            const indicator = document.getElementById('zoomIndicator');
+            indicator.textContent = text;
+            indicator.classList.add('show');
+            setTimeout(() => indicator.classList.remove('show'), 2000);
+        }
+        
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        // Scroll do mouse para zoom
+        document.addEventListener('wheel', (e) => {
+            if (e.ctrlKey) {
+                e.preventDefault();
+                if (e.deltaY < 0) {
+                    zoomIn();
+                } else {
+                    zoomOut();
+                }
+            }
+        }, { passive: false });
         
         // Atalhos
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'f' || e.key === 'F') {
-                e.preventDefault();
-                toggleFullscreen();
-            }
-            if (e.key === 't' || e.key === 'T') {
-                toggleTitle();
-            }
-        });
-        
-        // Detectar saída de fullscreen
-        document.addEventListener('fullscreenchange', function() {
-            if (!document.fullscreenElement) {
-                document.getElementById('fullscreenBtn').innerHTML = '<span>⛶</span> Tela Cheia';
-            }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '+' || e.key === '=') { zoomIn(); }
+            if (e.key === '-' || e.key === '_') { zoomOut(); }
+            if (e.key === '0') { resetZoom(); }
+            if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullscreen(); }
         });
     </script>
 </body>
