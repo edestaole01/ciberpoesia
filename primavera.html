@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Primavera - Ciberpoema</title>
+    <meta name="description" content="Ciberpoema Primavera - Poesia digital interativa de Ana Cláudia Gruszynski e Sérgio Capparelli">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -14,6 +15,7 @@
             padding: 20px;
         }
         
+        /* Barra de controles fixa */
         .controls {
             position: fixed;
             top: 20px;
@@ -22,43 +24,56 @@
             display: flex;
             gap: 10px;
             z-index: 1000;
-            background: rgba(255,255,255,0.95);
-            padding: 10px 20px;
-            border-radius: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.98);
+            padding: 12px 25px;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
         }
         
         .btn-control {
             background-color: #FF6633;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 25px;
             cursor: pointer;
             font-weight: bold;
             text-decoration: none;
             transition: all 0.3s ease;
-            font-size: 14px;
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .btn-control:hover {
             background-color: #FF5522;
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 102, 51, 0.4);
         }
         
+        .btn-control:active {
+            transform: translateY(0);
+        }
+        
+        /* Container principal */
         .container {
             max-width: 1400px;
-            margin: 80px auto 40px;
+            margin: 90px auto 40px;
         }
         
+        /* Título do poema */
         .poem-title {
-            font-size: 3rem;
+            font-size: 3.5rem;
             color: #333;
             margin-bottom: 30px;
             text-align: center;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-weight: bold;
         }
         
+        /* Wrapper do player */
         .player-wrapper {
             background: white;
             padding: 30px;
@@ -66,149 +81,212 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
         
+        /* Player Flash */
         #player {
             width: 100%;
-            min-height: 700px;
-            border: 3px solid #ddd;
+            min-height: 750px;
+            border: 4px solid #ddd;
             border-radius: 15px;
             overflow: hidden;
             background: #fafafa;
             box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
         }
         
+        /* Loading */
         .loading {
             text-align: center;
-            padding: 100px 40px;
+            padding: 150px 40px;
             color: #666;
             font-size: 1.5rem;
         }
         
+        .loading::before {
+            content: "⏳";
+            display: block;
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        /* Seção de início */
         .start-section {
             text-align: center;
-            padding: 40px;
-            background: linear-gradient(135deg, #FF6633, #FF9966);
-            border-radius: 15px;
-            margin-bottom: 20px;
+            padding: 50px;
+            background: linear-gradient(135deg, #FF6633 0%, #FF9966 100%);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(255, 102, 51, 0.3);
         }
         
         .start-btn {
             background-color: white;
             color: #FF6633;
             border: none;
-            padding: 25px 60px;
+            padding: 28px 70px;
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         }
         
         .start-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transform: scale(1.08);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
         }
         
+        .start-btn:active {
+            transform: scale(1.02);
+        }
+        
+        /* Informações */
         .info {
             text-align: center;
             color: #666;
-            margin-top: 20px;
+            margin-top: 25px;
             font-size: 1rem;
-            padding: 15px;
-            background: #f5f5f5;
-            border-radius: 10px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            border-left: 4px solid #FF6633;
         }
         
-        .fullscreen-btn {
-            background: #333;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
+        .info strong {
+            color: #FF6633;
+        }
+        
+        /* Atalhos de teclado */
+        .shortcuts {
+            text-align: center;
             margin-top: 15px;
-            transition: all 0.3s ease;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #666;
         }
         
-        .fullscreen-btn:hover {
-            background: #000;
-            transform: scale(1.05);
+        .key {
+            background: white;
+            padding: 4px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-family: monospace;
+            font-weight: bold;
+            color: #333;
         }
         
         /* Tela cheia */
         #player:fullscreen {
             background: #000;
+            border: none;
+            border-radius: 0;
         }
         
-        /* Desktop grande */
+        #player:-webkit-full-screen {
+            background: #000;
+            border: none;
+            border-radius: 0;
+        }
+        
+        /* Responsividade */
         @media (min-width: 1600px) {
-            #player {
-                min-height: 900px;
-            }
+            #player { min-height: 900px; }
         }
         
-        /* Tablet */
-        @media (max-width: 1024px) {
-            .poem-title { font-size: 2.5rem; }
-            #player { min-height: 600px; }
-            .start-btn { font-size: 1.3rem; padding: 20px 50px; }
+        @media (max-width: 1200px) {
+            #player { min-height: 650px; }
+            .poem-title { font-size: 3rem; }
         }
         
-        /* Mobile */
         @media (max-width: 768px) {
-            .poem-title { font-size: 2rem; }
+            .poem-title { font-size: 2.2rem; }
             #player { min-height: 500px; }
-            .start-btn { font-size: 1.1rem; padding: 18px 40px; }
-            .container { margin: 100px auto 20px; }
+            .start-btn { font-size: 1.3rem; padding: 22px 50px; }
+            .container { margin: 110px auto 20px; }
             .controls { 
-                flex-direction: column; 
-                gap: 5px;
-                padding: 10px;
+                flex-direction: column;
+                gap: 8px;
+                padding: 12px 20px;
+                width: 90%;
+                max-width: 300px;
+            }
+            .btn-control {
+                width: 100%;
+                justify-content: center;
             }
         }
         
         @media (max-width: 480px) {
             #player { min-height: 400px; }
             .player-wrapper { padding: 15px; }
+            .start-section { padding: 30px 20px; }
         }
     </style>
 </head>
 <body>
+    <!-- Barra de controles -->
     <div class="controls">
-        <a href="index.html" class="btn-control">🏠 Início</a>
-        <button class="btn-control" onclick="toggleFullscreen()">⛶ Tela Cheia</button>
+        <a href="index.html" class="btn-control">
+            <span>🏠</span> Início
+        </a>
+        <button class="btn-control" onclick="toggleFullscreen()" id="fullscreenBtn">
+            <span>⛶</span> Tela Cheia
+        </button>
     </div>
     
+    <!-- Container principal -->
     <div class="container">
         <h1 class="poem-title">Primavera</h1>
         
+        <!-- Botão de início -->
         <div class="start-section" id="startSection">
             <button class="start-btn" id="start-btn">
                 ▶ CLIQUE PARA CARREGAR O POEMA
             </button>
         </div>
         
+        <!-- Player -->
         <div class="player-wrapper">
             <div id="player">
-                <div class="loading">⏳ Aguardando carregamento...</div>
+                <div class="loading">Aguardando carregamento...</div>
             </div>
             
+            <!-- Informações -->
             <div class="info">
                 <strong>Flash Macromedia v4</strong> · Emulado via Ruffle<br>
-                <small>Para melhor experiência, use em tela cheia</small>
+                <small>Para melhor experiência, clique em "Tela Cheia" após carregar</small>
+            </div>
+            
+            <!-- Atalhos -->
+            <div class="shortcuts">
+                💡 <strong>Atalhos:</strong> 
+                Pressione <span class="key">F</span> para tela cheia · 
+                <span class="key">ESC</span> para sair
             </div>
         </div>
     </div>
 
+    <!-- Ruffle -->
     <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
     
     <script>
-        let playerInstance = null;
+        let isFullscreen = false;
         
+        // Carregar poema
         document.getElementById('start-btn').addEventListener('click', function() {
-            document.getElementById('startSection').style.display = 'none';
+            this.disabled = true;
+            this.textContent = '⏳ Carregando...';
             
+            setTimeout(() => {
+                document.getElementById('startSection').style.display = 'none';
+                loadFlash();
+            }, 500);
+        });
+        
+        // Carregar Flash
+        function loadFlash() {
             try {
                 const swfData = "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";
                 const binaryString = atob(swfData);
@@ -224,10 +302,8 @@
                 const container = document.getElementById("player");
                 container.innerHTML = '';
                 container.appendChild(player);
-                
-                playerInstance = player;
 
-                // Configurações otimizadas para Flash v4
+                // Configurações otimizadas
                 player.load({
                     data: bytes,
                     allowScriptAccess: true,
@@ -241,31 +317,101 @@
                 });
                 
                 console.log('✅ Flash carregado com sucesso!');
+                
+                // Mostrar dica de tela cheia após 2 segundos
+                setTimeout(() => {
+                    showNotification('💡 Dica: Pressione F ou clique em "Tela Cheia" para melhor visualização');
+                }, 2000);
+                
             } catch (error) {
-                console.error('❌ Erro ao carregar Flash:', error);
+                console.error('❌ Erro ao carregar:', error);
                 document.getElementById("player").innerHTML = 
-                    '<div class="loading" style="color: red;">Erro ao carregar. Tente recarregar a página.</div>';
-            }
-        });
-        
-        // Função tela cheia
-        function toggleFullscreen() {
-            const player = document.getElementById('player');
-            if (!document.fullscreenElement) {
-                player.requestFullscreen().catch(err => {
-                    console.log('Erro ao entrar em tela cheia:', err);
-                });
-            } else {
-                document.exitFullscreen();
+                    '<div class="loading" style="color: red;">❌ Erro ao carregar. Recarregue a página (F5).</div>';
             }
         }
         
-        // Atalho F para tela cheia
+        // Tela cheia
+        function toggleFullscreen() {
+            const player = document.getElementById('player');
+            const btn = document.getElementById('fullscreenBtn');
+            
+            if (!document.fullscreenElement) {
+                player.requestFullscreen().then(() => {
+                    isFullscreen = true;
+                    btn.innerHTML = '<span>⊗</span> Sair Tela Cheia';
+                }).catch(err => {
+                    console.log('Erro:', err);
+                    alert('Não foi possível entrar em tela cheia. Tente pressionar F11.');
+                });
+            } else {
+                document.exitFullscreen().then(() => {
+                    isFullscreen = false;
+                    btn.innerHTML = '<span>⛶</span> Tela Cheia';
+                });
+            }
+        }
+        
+        // Atalhos de teclado
         document.addEventListener('keydown', function(e) {
+            // F para tela cheia
             if (e.key === 'f' || e.key === 'F') {
+                e.preventDefault();
                 toggleFullscreen();
             }
+            
+            // ESC para sair
+            if (e.key === 'Escape' && isFullscreen) {
+                isFullscreen = false;
+                document.getElementById('fullscreenBtn').innerHTML = '<span>⛶</span> Tela Cheia';
+            }
         });
+        
+        // Detectar saída de tela cheia
+        document.addEventListener('fullscreenchange', function() {
+            if (!document.fullscreenElement) {
+                isFullscreen = false;
+                document.getElementById('fullscreenBtn').innerHTML = '<span>⛶</span> Tela Cheia';
+            }
+        });
+        
+        // Notificação temporária
+        function showNotification(message) {
+            const notif = document.createElement('div');
+            notif.textContent = message;
+            notif.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                background: rgba(0,0,0,0.85);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                font-size: 14px;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+                max-width: 300px;
+            `;
+            document.body.appendChild(notif);
+            
+            setTimeout(() => {
+                notif.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notif.remove(), 300);
+            }, 4000);
+        }
+        
+        // Animações
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(400px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(400px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>

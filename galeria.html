@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galeria - Ciberpoema</title>
+    <meta name="description" content="Ciberpoema Galeria - Poesia digital interativa de Ana Cláudia Gruszynski e Sérgio Capparelli">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -14,6 +15,7 @@
             padding: 20px;
         }
         
+        /* Barra de controles fixa */
         .controls {
             position: fixed;
             top: 20px;
@@ -22,43 +24,56 @@
             display: flex;
             gap: 10px;
             z-index: 1000;
-            background: rgba(255,255,255,0.95);
-            padding: 10px 20px;
-            border-radius: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.98);
+            padding: 12px 25px;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
         }
         
         .btn-control {
             background-color: #FF6633;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 25px;
             cursor: pointer;
             font-weight: bold;
             text-decoration: none;
             transition: all 0.3s ease;
-            font-size: 14px;
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .btn-control:hover {
             background-color: #FF5522;
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 102, 51, 0.4);
         }
         
+        .btn-control:active {
+            transform: translateY(0);
+        }
+        
+        /* Container principal */
         .container {
             max-width: 1400px;
-            margin: 80px auto 40px;
+            margin: 90px auto 40px;
         }
         
+        /* Título do poema */
         .poem-title {
-            font-size: 3rem;
+            font-size: 3.5rem;
             color: #333;
             margin-bottom: 30px;
             text-align: center;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-weight: bold;
         }
         
+        /* Wrapper do player */
         .player-wrapper {
             background: white;
             padding: 30px;
@@ -66,149 +81,212 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
         
+        /* Player Flash */
         #player {
             width: 100%;
-            min-height: 700px;
-            border: 3px solid #ddd;
+            min-height: 750px;
+            border: 4px solid #ddd;
             border-radius: 15px;
             overflow: hidden;
             background: #fafafa;
             box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
         }
         
+        /* Loading */
         .loading {
             text-align: center;
-            padding: 100px 40px;
+            padding: 150px 40px;
             color: #666;
             font-size: 1.5rem;
         }
         
+        .loading::before {
+            content: "⏳";
+            display: block;
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        /* Seção de início */
         .start-section {
             text-align: center;
-            padding: 40px;
-            background: linear-gradient(135deg, #FF6633, #FF9966);
-            border-radius: 15px;
-            margin-bottom: 20px;
+            padding: 50px;
+            background: linear-gradient(135deg, #FF6633 0%, #FF9966 100%);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(255, 102, 51, 0.3);
         }
         
         .start-btn {
             background-color: white;
             color: #FF6633;
             border: none;
-            padding: 25px 60px;
+            padding: 28px 70px;
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         }
         
         .start-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transform: scale(1.08);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
         }
         
+        .start-btn:active {
+            transform: scale(1.02);
+        }
+        
+        /* Informações */
         .info {
             text-align: center;
             color: #666;
-            margin-top: 20px;
+            margin-top: 25px;
             font-size: 1rem;
-            padding: 15px;
-            background: #f5f5f5;
-            border-radius: 10px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            border-left: 4px solid #FF6633;
         }
         
-        .fullscreen-btn {
-            background: #333;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
+        .info strong {
+            color: #FF6633;
+        }
+        
+        /* Atalhos de teclado */
+        .shortcuts {
+            text-align: center;
             margin-top: 15px;
-            transition: all 0.3s ease;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #666;
         }
         
-        .fullscreen-btn:hover {
-            background: #000;
-            transform: scale(1.05);
+        .key {
+            background: white;
+            padding: 4px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-family: monospace;
+            font-weight: bold;
+            color: #333;
         }
         
         /* Tela cheia */
         #player:fullscreen {
             background: #000;
+            border: none;
+            border-radius: 0;
         }
         
-        /* Desktop grande */
+        #player:-webkit-full-screen {
+            background: #000;
+            border: none;
+            border-radius: 0;
+        }
+        
+        /* Responsividade */
         @media (min-width: 1600px) {
-            #player {
-                min-height: 900px;
-            }
+            #player { min-height: 900px; }
         }
         
-        /* Tablet */
-        @media (max-width: 1024px) {
-            .poem-title { font-size: 2.5rem; }
-            #player { min-height: 600px; }
-            .start-btn { font-size: 1.3rem; padding: 20px 50px; }
+        @media (max-width: 1200px) {
+            #player { min-height: 650px; }
+            .poem-title { font-size: 3rem; }
         }
         
-        /* Mobile */
         @media (max-width: 768px) {
-            .poem-title { font-size: 2rem; }
+            .poem-title { font-size: 2.2rem; }
             #player { min-height: 500px; }
-            .start-btn { font-size: 1.1rem; padding: 18px 40px; }
-            .container { margin: 100px auto 20px; }
+            .start-btn { font-size: 1.3rem; padding: 22px 50px; }
+            .container { margin: 110px auto 20px; }
             .controls { 
-                flex-direction: column; 
-                gap: 5px;
-                padding: 10px;
+                flex-direction: column;
+                gap: 8px;
+                padding: 12px 20px;
+                width: 90%;
+                max-width: 300px;
+            }
+            .btn-control {
+                width: 100%;
+                justify-content: center;
             }
         }
         
         @media (max-width: 480px) {
             #player { min-height: 400px; }
             .player-wrapper { padding: 15px; }
+            .start-section { padding: 30px 20px; }
         }
     </style>
 </head>
 <body>
+    <!-- Barra de controles -->
     <div class="controls">
-        <a href="index.html" class="btn-control">🏠 Início</a>
-        <button class="btn-control" onclick="toggleFullscreen()">⛶ Tela Cheia</button>
+        <a href="index.html" class="btn-control">
+            <span>🏠</span> Início
+        </a>
+        <button class="btn-control" onclick="toggleFullscreen()" id="fullscreenBtn">
+            <span>⛶</span> Tela Cheia
+        </button>
     </div>
     
+    <!-- Container principal -->
     <div class="container">
         <h1 class="poem-title">Galeria</h1>
         
+        <!-- Botão de início -->
         <div class="start-section" id="startSection">
             <button class="start-btn" id="start-btn">
                 ▶ CLIQUE PARA CARREGAR O POEMA
             </button>
         </div>
         
+        <!-- Player -->
         <div class="player-wrapper">
             <div id="player">
-                <div class="loading">⏳ Aguardando carregamento...</div>
+                <div class="loading">Aguardando carregamento...</div>
             </div>
             
+            <!-- Informações -->
             <div class="info">
                 <strong>Flash Macromedia v4</strong> · Emulado via Ruffle<br>
-                <small>Para melhor experiência, use em tela cheia</small>
+                <small>Para melhor experiência, clique em "Tela Cheia" após carregar</small>
+            </div>
+            
+            <!-- Atalhos -->
+            <div class="shortcuts">
+                💡 <strong>Atalhos:</strong> 
+                Pressione <span class="key">F</span> para tela cheia · 
+                <span class="key">ESC</span> para sair
             </div>
         </div>
     </div>
 
+    <!-- Ruffle -->
     <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
     
     <script>
-        let playerInstance = null;
+        let isFullscreen = false;
         
+        // Carregar poema
         document.getElementById('start-btn').addEventListener('click', function() {
-            document.getElementById('startSection').style.display = 'none';
+            this.disabled = true;
+            this.textContent = '⏳ Carregando...';
             
+            setTimeout(() => {
+                document.getElementById('startSection').style.display = 'none';
+                loadFlash();
+            }, 500);
+        });
+        
+        // Carregar Flash
+        function loadFlash() {
             try {
                 const swfData = "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";
                 const binaryString = atob(swfData);
@@ -224,10 +302,8 @@
                 const container = document.getElementById("player");
                 container.innerHTML = '';
                 container.appendChild(player);
-                
-                playerInstance = player;
 
-                // Configurações otimizadas para Flash v4
+                // Configurações otimizadas
                 player.load({
                     data: bytes,
                     allowScriptAccess: true,
@@ -241,31 +317,101 @@
                 });
                 
                 console.log('✅ Flash carregado com sucesso!');
+                
+                // Mostrar dica de tela cheia após 2 segundos
+                setTimeout(() => {
+                    showNotification('💡 Dica: Pressione F ou clique em "Tela Cheia" para melhor visualização');
+                }, 2000);
+                
             } catch (error) {
-                console.error('❌ Erro ao carregar Flash:', error);
+                console.error('❌ Erro ao carregar:', error);
                 document.getElementById("player").innerHTML = 
-                    '<div class="loading" style="color: red;">Erro ao carregar. Tente recarregar a página.</div>';
-            }
-        });
-        
-        // Função tela cheia
-        function toggleFullscreen() {
-            const player = document.getElementById('player');
-            if (!document.fullscreenElement) {
-                player.requestFullscreen().catch(err => {
-                    console.log('Erro ao entrar em tela cheia:', err);
-                });
-            } else {
-                document.exitFullscreen();
+                    '<div class="loading" style="color: red;">❌ Erro ao carregar. Recarregue a página (F5).</div>';
             }
         }
         
-        // Atalho F para tela cheia
+        // Tela cheia
+        function toggleFullscreen() {
+            const player = document.getElementById('player');
+            const btn = document.getElementById('fullscreenBtn');
+            
+            if (!document.fullscreenElement) {
+                player.requestFullscreen().then(() => {
+                    isFullscreen = true;
+                    btn.innerHTML = '<span>⊗</span> Sair Tela Cheia';
+                }).catch(err => {
+                    console.log('Erro:', err);
+                    alert('Não foi possível entrar em tela cheia. Tente pressionar F11.');
+                });
+            } else {
+                document.exitFullscreen().then(() => {
+                    isFullscreen = false;
+                    btn.innerHTML = '<span>⛶</span> Tela Cheia';
+                });
+            }
+        }
+        
+        // Atalhos de teclado
         document.addEventListener('keydown', function(e) {
+            // F para tela cheia
             if (e.key === 'f' || e.key === 'F') {
+                e.preventDefault();
                 toggleFullscreen();
             }
+            
+            // ESC para sair
+            if (e.key === 'Escape' && isFullscreen) {
+                isFullscreen = false;
+                document.getElementById('fullscreenBtn').innerHTML = '<span>⛶</span> Tela Cheia';
+            }
         });
+        
+        // Detectar saída de tela cheia
+        document.addEventListener('fullscreenchange', function() {
+            if (!document.fullscreenElement) {
+                isFullscreen = false;
+                document.getElementById('fullscreenBtn').innerHTML = '<span>⛶</span> Tela Cheia';
+            }
+        });
+        
+        // Notificação temporária
+        function showNotification(message) {
+            const notif = document.createElement('div');
+            notif.textContent = message;
+            notif.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                background: rgba(0,0,0,0.85);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                font-size: 14px;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+                max-width: 300px;
+            `;
+            document.body.appendChild(notif);
+            
+            setTimeout(() => {
+                notif.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notif.remove(), 300);
+            }, 4000);
+        }
+        
+        // Animações
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(400px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(400px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
