@@ -6,24 +6,28 @@
     <title>Barra_Cheiovazio - Ciberpoema</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
             padding: 20px;
         }
+        
         .controls {
             position: fixed;
             top: 20px;
-            right: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             gap: 10px;
             z-index: 1000;
+            background: rgba(255,255,255,0.95);
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
+        
         .btn-control {
             background-color: #FF6633;
             color: white;
@@ -34,89 +38,176 @@
             font-weight: bold;
             text-decoration: none;
             transition: all 0.3s ease;
+            font-size: 14px;
         }
+        
         .btn-control:hover {
             background-color: #FF5522;
             transform: scale(1.05);
         }
+        
+        .container {
+            max-width: 1400px;
+            margin: 80px auto 40px;
+        }
+        
         .poem-title {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
-        .poem-container {
+        
+        .player-wrapper {
             background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            max-width: 900px;
-            width: 100%;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
+        
         #player {
             width: 100%;
-            height: 600px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            min-height: 700px;
+            border: 3px solid #ddd;
+            border-radius: 15px;
             overflow: hidden;
             background: #fafafa;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
         }
+        
         .loading {
             text-align: center;
-            padding: 40px;
+            padding: 100px 40px;
             color: #666;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
         }
+        
+        .start-section {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #FF6633, #FF9966);
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        
         .start-btn {
-            background-color: #FF6633;
-            color: white;
+            background-color: white;
+            color: #FF6633;
             border: none;
-            padding: 20px 40px;
-            border-radius: 30px;
+            padding: 25px 60px;
+            border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 1.2rem;
-            margin: 20px auto;
-            display: block;
+            font-size: 1.5rem;
             transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
+        
         .start-btn:hover {
-            background-color: #FF5522;
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(255, 102, 51, 0.4);
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
+        
         .info {
             text-align: center;
             color: #666;
-            margin-top: 15px;
-            font-size: 0.9rem;
+            margin-top: 20px;
+            font-size: 1rem;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
         }
+        
+        .fullscreen-btn {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .fullscreen-btn:hover {
+            background: #000;
+            transform: scale(1.05);
+        }
+        
+        /* Tela cheia */
+        #player:fullscreen {
+            background: #000;
+        }
+        
+        /* Desktop grande */
+        @media (min-width: 1600px) {
+            #player {
+                min-height: 900px;
+            }
+        }
+        
+        /* Tablet */
+        @media (max-width: 1024px) {
+            .poem-title { font-size: 2.5rem; }
+            #player { min-height: 600px; }
+            .start-btn { font-size: 1.3rem; padding: 20px 50px; }
+        }
+        
+        /* Mobile */
         @media (max-width: 768px) {
-            .poem-title { font-size: 1.8rem; }
-            #player { height: 400px; }
+            .poem-title { font-size: 2rem; }
+            #player { min-height: 500px; }
+            .start-btn { font-size: 1.1rem; padding: 18px 40px; }
+            .container { margin: 100px auto 20px; }
+            .controls { 
+                flex-direction: column; 
+                gap: 5px;
+                padding: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            #player { min-height: 400px; }
+            .player-wrapper { padding: 15px; }
         }
     </style>
 </head>
 <body>
     <div class="controls">
-        <a href="../ciberpoesia.html" class="btn-control">◀ Voltar</a>
+        <a href="index.html" class="btn-control">🏠 Início</a>
+        <button class="btn-control" onclick="toggleFullscreen()">⛶ Tela Cheia</button>
     </div>
     
-    <h1 class="poem-title">Barra_Cheiovazio</h1>
-    
-    <div class="poem-container">
-        <button class="start-btn" id="start-btn">▶ CLIQUE AQUI PARA CARREGAR O POEMA</button>
-        <div id="player">
-            <div class="loading">Preparando o Flash Player...</div>
+    <div class="container">
+        <h1 class="poem-title">Barra_Cheiovazio</h1>
+        
+        <div class="start-section" id="startSection">
+            <button class="start-btn" id="start-btn">
+                ▶ CLIQUE PARA CARREGAR O POEMA
+            </button>
         </div>
-        <p class="info">Flash Macromedia v4 · Emulado via Ruffle</p>
+        
+        <div class="player-wrapper">
+            <div id="player">
+                <div class="loading">⏳ Aguardando carregamento...</div>
+            </div>
+            
+            <div class="info">
+                <strong>Flash Macromedia v4</strong> · Emulado via Ruffle<br>
+                <small>Para melhor experiência, use em tela cheia</small>
+            </div>
+        </div>
     </div>
 
     <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
     
     <script>
+        let playerInstance = null;
+        
         document.getElementById('start-btn').addEventListener('click', function() {
-            this.style.display = 'none';
+            document.getElementById('startSection').style.display = 'none';
             
             try {
                 const swfData = "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";
@@ -133,6 +224,8 @@
                 const container = document.getElementById("player");
                 container.innerHTML = '';
                 container.appendChild(player);
+                
+                playerInstance = player;
 
                 // Configurações otimizadas para Flash v4
                 player.load({
@@ -141,15 +234,36 @@
                     autoplay: "on",
                     unmuteOverlay: "hidden",
                     backgroundColor: "#FFFFFF",
-                    letterbox: "on",
+                    letterbox: "fullscreen",
+                    scale: "showAll",
+                    quality: "high",
                     warnOnUnsupportedContent: false
                 });
                 
-                console.log('Flash carregado com sucesso!');
+                console.log('✅ Flash carregado com sucesso!');
             } catch (error) {
-                console.error('Erro ao carregar Flash:', error);
+                console.error('❌ Erro ao carregar Flash:', error);
                 document.getElementById("player").innerHTML = 
                     '<div class="loading" style="color: red;">Erro ao carregar. Tente recarregar a página.</div>';
+            }
+        });
+        
+        // Função tela cheia
+        function toggleFullscreen() {
+            const player = document.getElementById('player');
+            if (!document.fullscreenElement) {
+                player.requestFullscreen().catch(err => {
+                    console.log('Erro ao entrar em tela cheia:', err);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        // Atalho F para tela cheia
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'f' || e.key === 'F') {
+                toggleFullscreen();
             }
         });
     </script>

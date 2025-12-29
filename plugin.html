@@ -6,24 +6,28 @@
     <title>Plugin - Ciberpoema</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
             padding: 20px;
         }
+        
         .controls {
             position: fixed;
             top: 20px;
-            right: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             gap: 10px;
             z-index: 1000;
+            background: rgba(255,255,255,0.95);
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
+        
         .btn-control {
             background-color: #FF6633;
             color: white;
@@ -34,89 +38,176 @@
             font-weight: bold;
             text-decoration: none;
             transition: all 0.3s ease;
+            font-size: 14px;
         }
+        
         .btn-control:hover {
             background-color: #FF5522;
             transform: scale(1.05);
         }
+        
+        .container {
+            max-width: 1400px;
+            margin: 80px auto 40px;
+        }
+        
         .poem-title {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
-        .poem-container {
+        
+        .player-wrapper {
             background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            max-width: 900px;
-            width: 100%;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
+        
         #player {
             width: 100%;
-            height: 600px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            min-height: 700px;
+            border: 3px solid #ddd;
+            border-radius: 15px;
             overflow: hidden;
             background: #fafafa;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
         }
+        
         .loading {
             text-align: center;
-            padding: 40px;
+            padding: 100px 40px;
             color: #666;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
         }
+        
+        .start-section {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #FF6633, #FF9966);
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        
         .start-btn {
-            background-color: #FF6633;
-            color: white;
+            background-color: white;
+            color: #FF6633;
             border: none;
-            padding: 20px 40px;
-            border-radius: 30px;
+            padding: 25px 60px;
+            border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 1.2rem;
-            margin: 20px auto;
-            display: block;
+            font-size: 1.5rem;
             transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
+        
         .start-btn:hover {
-            background-color: #FF5522;
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(255, 102, 51, 0.4);
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
+        
         .info {
             text-align: center;
             color: #666;
-            margin-top: 15px;
-            font-size: 0.9rem;
+            margin-top: 20px;
+            font-size: 1rem;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
         }
+        
+        .fullscreen-btn {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .fullscreen-btn:hover {
+            background: #000;
+            transform: scale(1.05);
+        }
+        
+        /* Tela cheia */
+        #player:fullscreen {
+            background: #000;
+        }
+        
+        /* Desktop grande */
+        @media (min-width: 1600px) {
+            #player {
+                min-height: 900px;
+            }
+        }
+        
+        /* Tablet */
+        @media (max-width: 1024px) {
+            .poem-title { font-size: 2.5rem; }
+            #player { min-height: 600px; }
+            .start-btn { font-size: 1.3rem; padding: 20px 50px; }
+        }
+        
+        /* Mobile */
         @media (max-width: 768px) {
-            .poem-title { font-size: 1.8rem; }
-            #player { height: 400px; }
+            .poem-title { font-size: 2rem; }
+            #player { min-height: 500px; }
+            .start-btn { font-size: 1.1rem; padding: 18px 40px; }
+            .container { margin: 100px auto 20px; }
+            .controls { 
+                flex-direction: column; 
+                gap: 5px;
+                padding: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            #player { min-height: 400px; }
+            .player-wrapper { padding: 15px; }
         }
     </style>
 </head>
 <body>
     <div class="controls">
-        <a href="../ciberpoesia.html" class="btn-control">◀ Voltar</a>
+        <a href="index.html" class="btn-control">🏠 Início</a>
+        <button class="btn-control" onclick="toggleFullscreen()">⛶ Tela Cheia</button>
     </div>
     
-    <h1 class="poem-title">Plugin</h1>
-    
-    <div class="poem-container">
-        <button class="start-btn" id="start-btn">▶ CLIQUE AQUI PARA CARREGAR O POEMA</button>
-        <div id="player">
-            <div class="loading">Preparando o Flash Player...</div>
+    <div class="container">
+        <h1 class="poem-title">Plugin</h1>
+        
+        <div class="start-section" id="startSection">
+            <button class="start-btn" id="start-btn">
+                ▶ CLIQUE PARA CARREGAR O POEMA
+            </button>
         </div>
-        <p class="info">Flash Macromedia v4 · Emulado via Ruffle</p>
+        
+        <div class="player-wrapper">
+            <div id="player">
+                <div class="loading">⏳ Aguardando carregamento...</div>
+            </div>
+            
+            <div class="info">
+                <strong>Flash Macromedia v4</strong> · Emulado via Ruffle<br>
+                <small>Para melhor experiência, use em tela cheia</small>
+            </div>
+        </div>
     </div>
 
     <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
     
     <script>
+        let playerInstance = null;
+        
         document.getElementById('start-btn').addEventListener('click', function() {
-            this.style.display = 'none';
+            document.getElementById('startSection').style.display = 'none';
             
             try {
                 const swfData = "RldTBGoAAABQALQAC0AADAMAQwL///8/Aw4AAACWAwAAYQCWAwAAMQAdAEAAPwMXAAAAB5YDAABhAByWAgAAABMSEp0CAAEABABAAD8DFAAAAIMQAGluZGV4Mi5odG0AX3RvcAAAQAAAAA==";
@@ -133,6 +224,8 @@
                 const container = document.getElementById("player");
                 container.innerHTML = '';
                 container.appendChild(player);
+                
+                playerInstance = player;
 
                 // Configurações otimizadas para Flash v4
                 player.load({
@@ -141,15 +234,36 @@
                     autoplay: "on",
                     unmuteOverlay: "hidden",
                     backgroundColor: "#FFFFFF",
-                    letterbox: "on",
+                    letterbox: "fullscreen",
+                    scale: "showAll",
+                    quality: "high",
                     warnOnUnsupportedContent: false
                 });
                 
-                console.log('Flash carregado com sucesso!');
+                console.log('✅ Flash carregado com sucesso!');
             } catch (error) {
-                console.error('Erro ao carregar Flash:', error);
+                console.error('❌ Erro ao carregar Flash:', error);
                 document.getElementById("player").innerHTML = 
                     '<div class="loading" style="color: red;">Erro ao carregar. Tente recarregar a página.</div>';
+            }
+        });
+        
+        // Função tela cheia
+        function toggleFullscreen() {
+            const player = document.getElementById('player');
+            if (!document.fullscreenElement) {
+                player.requestFullscreen().catch(err => {
+                    console.log('Erro ao entrar em tela cheia:', err);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        // Atalho F para tela cheia
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'f' || e.key === 'F') {
+                toggleFullscreen();
             }
         });
     </script>
