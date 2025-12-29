@@ -1,0 +1,44 @@
+[
+  {
+    "nome": "cha",
+    "titulo": "Chá",
+    "arquivo": "cha.html",
+    "swf_original": "xicara2.swf"
+  },
+  {
+    "nome": "gato",
+    "titulo": "Gato Letrado",
+    "arquivo": "gato.html",
+    "swf_original": "gatoletrado2.swf"
+  },
+  {
+    "nome": "navio",
+    "titulo": "Navio",
+    "arquivo": "navio.html",
+    "swf_original": "navio.swf"
+  },
+  {
+    "nome": "zigue",
+    "titulo": "Zigue-Zague",
+    "arquivo": "zigue.html",
+    "swf_original": "ziguezague.swf"
+  },
+  {
+    "nome": "cheiovazio",
+    "titulo": "Cheio/Vazio",
+    "arquivo": "cheiovazio.html",
+    "swf_original": "cheiovazio.swf"
+  },
+  {
+    "nome": "babel",
+    "titulo": "Babel",
+    "arquivo": "babel.html",
+    "swf_original": "babel5.swf"
+  },
+  {
+    "nome": "primavera",
+    "titulo": "Primavera",
+    "arquivo": "primavera.html",
+    "swf_original": "nova.swf"
+  }
+]

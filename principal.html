@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principal - Ciberpoema</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 100%);
+               display: flex; flex-direction: column; justify-content: center; align-items: center;
+               min-height: 100vh; padding: 20px; }
+        .controls { position: fixed; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 1000; }
+        .btn-control { background-color: #FF6633; color: white; border: none; padding: 10px 20px;
+                       border-radius: 25px; cursor: pointer; font-weight: bold; text-decoration: none;
+                       transition: all 0.3s ease; display: inline-block; }
+        .btn-control:hover { background-color: #FF5522; transform: scale(1.05); }
+        .poem-title { font-size: 2.5rem; color: #333; margin-bottom: 20px; text-align: center; }
+        .poem-container { background: white; padding: 20px; border-radius: 15px;
+                          box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-width: 900px; width: 100%; }
+        #player { width: 100%; height: 600px; border: none; border-radius: 10px; overflow: hidden; }
+        .loading { text-align: center; padding: 40px; color: #666; font-size: 1.2rem; }
+        .start-btn { background-color: #FF6633; color: white; border: none; padding: 20px 40px;
+                     border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 1.2rem;
+                     margin: 20px auto; display: block; transition: all 0.3s ease; }
+        .start-btn:hover { background-color: #FF5522; transform: scale(1.05);
+                           box-shadow: 0 5px 15px rgba(255, 102, 51, 0.4); }
+        @media (max-width: 768px) { .poem-title { font-size: 1.8rem; } #player { height: 400px; } }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <a href="../ciberpoesia.html" class="btn-control">◀ Voltar</a>
+    </div>
+    <h1 class="poem-title">Principal</h1>
+    <div class="poem-container">
+        <button class="start-btn" id="start-btn">▶ INICIAR POEMA</button>
+        <div id="player"><div class="loading">Preparando o poema...</div></div>
+    </div>
+    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+    <script>
+        document.getElementById('start-btn').addEventListener('click', function() {
+            this.style.display = 'none';
+            const swfData = "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";
+            const binaryString = atob(swfData);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) { bytes[i] = binaryString.charCodeAt(i); }
+            const ruffle = window.RufflePlayer.newest();
+            const player = ruffle.createPlayer();
+            const container = document.getElementById("player");
+            container.innerHTML = '';
+            container.appendChild(player);
+            player.load({ data: bytes, allowScriptAccess: true, autoplay: "on", unmuteOverlay: "hidden" });
+        });
+    </script>
+</body>
+</html>
