@@ -79,37 +79,16 @@
             position: relative;
         }
         
-        /* Overlay para esconder o texto CARREGANDO */
-        #loading-overlay {
+        /* Overlay PERMANENTE para esconder área de loading */
+        #loading-blocker {
             position: absolute;
-            top: 30%;
-            left: 0;
-            right: 0;
-            height: 150px;
-            background: linear-gradient(to bottom, 
-                transparent 0%,
-                rgba(0,0,0,0.95) 20%,
-                rgba(0,0,0,0.95) 80%,
-                transparent 100%
-            );
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
+            top: 33%;
+            left: 25%;
+            right: 25%;
+            height: 100px;
+            background: #000;
+            z-index: 999;
             pointer-events: none;
-            opacity: 1;
-            transition: opacity 1s ease-out;
-        }
-        
-        #loading-overlay.hidden {
-            opacity: 0;
-        }
-        
-        #loading-overlay .message {
-            color: #FFF;
-            font-size: 1.2rem;
-            text-align: center;
-            padding: 20px;
         }
         
         @media (max-width: 768px) {
@@ -119,6 +98,11 @@
             
             #ruffle-container {
                 height: 500px;
+            }
+            
+            #loading-blocker {
+                left: 15%;
+                right: 15%;
             }
         }
     </style>
@@ -132,9 +116,8 @@
     
     <div class="flash-container">
         <div id="ruffle-container">
-            <div id="loading-overlay">
-                <div class="message">⏳ Carregando interface original...</div>
-            </div>
+            <!-- Overlay permanente para bloquear a área de loading -->
+            <div id="loading-blocker"></div>
         </div>
     </div>
 
@@ -146,7 +129,7 @@
             const player = ruffle.createPlayer();
             const container = document.getElementById("ruffle-container");
             
-            // Adicionar player antes do overlay
+            // Adicionar player antes do blocker
             container.insertBefore(player, container.firstChild);
             
             player.style.width = "100%";
@@ -156,17 +139,6 @@
             player.style.left = "0";
             
             player.load("layout.swf");
-            
-            // Esconder overlay após 3 segundos
-            setTimeout(() => {
-                const overlay = document.getElementById("loading-overlay");
-                overlay.classList.add("hidden");
-                
-                // Remover completamente após a transição
-                setTimeout(() => {
-                    overlay.remove();
-                }, 1000);
-            }, 3000);
         });
     </script>
 </body>
