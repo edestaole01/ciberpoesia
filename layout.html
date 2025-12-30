@@ -77,13 +77,6 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
         
-        #loading-message {
-            color: #666;
-            text-align: center;
-            padding: 50px;
-            font-size: 1.2rem;
-        }
-        
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.8rem;
@@ -103,9 +96,7 @@
     </div>
     
     <div class="flash-container">
-        <div id="ruffle-container">
-            <div id="loading-message">⏳ Carregando layout original...</div>
-        </div>
+        <div id="ruffle-container"></div>
     </div>
 
     <script>
@@ -115,15 +106,11 @@
             const player = ruffle.createPlayer();
             const container = document.getElementById("ruffle-container");
             
-            // Limpar mensagem de loading
-            container.innerHTML = '';
             container.appendChild(player);
             
-            // Configurar player
             player.style.width = "100%";
             player.style.height = "100%";
             
-            // Carregar o SWF
             player.load("layout.swf");
         });
     </script>
