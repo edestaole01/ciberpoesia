@@ -31,18 +31,6 @@
             margin-top: 0;
         }
         
-        .btn-play { 
-            padding: 15px 30px; 
-            background: #333; 
-            color: #fff; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            font-size: 16px; 
-            margin-bottom: 20px;
-            transition: background 0.3s;
-        }
-        
         .btn-play:hover {
             background: #555;
         }
@@ -79,7 +67,6 @@
 </head>
 <body>
 
-    <button class="btn-play" id="start-btn">CLIQUE AQUI PARA CARREGAR O POEMA</button>
     <div id="loading">Carregando...</div>
     
     <div class="players-container">
@@ -194,9 +181,8 @@
         }
 
         // Botão iniciar
-        document.getElementById('start-btn').addEventListener('click', function() {
-            this.style.display = 'none';
-            document.getElementById('loading').style.display = 'block';
+        window.addEventListener('load', function() {
+        document.getElementById('loading').style.display = 'block';
             
             setTimeout(() => {
                 document.getElementById('loading').style.display = 'none';
