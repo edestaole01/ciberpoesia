@@ -66,12 +66,26 @@
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
         }
         
         #ruffle-container {
             width: 100%;
             height: 100%;
             max-width: 1200px;
+        }
+        
+        /* OCULTAR ELEMENTO DE CARREGAMENTO DO FLASH */
+        .flash-container::after {
+            content: '';
+            position: absolute;
+            top: 35%;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: #000;
+            z-index: 9999;
+            pointer-events: none;
         }
         
         @media (max-width: 768px) {
@@ -107,6 +121,14 @@
             player.style.height = "100%";
             
             player.load("layout.swf");
+            
+            // Remover overlay após 3 segundos
+            setTimeout(function() {
+                const overlay = document.querySelector('.flash-container::after');
+                if (overlay) {
+                    document.querySelector('.flash-container').style.setProperty('--hide-overlay', 'none');
+                }
+            }, 3000);
         });
     </script>
 </body>
