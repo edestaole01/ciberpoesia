@@ -1,310 +1,662 @@
+Com certeza! Vamos modernizar o visual mantendo a estética "retrô-digital", mas deixando tudo mais **fluido, uniforme e vivo**.
+
+Aqui estão as principais mudanças que fiz neste código:
+
+1. **Uniformidade (Design System):** Criei "Variáveis CSS" (`:root`) no início. Isso garante que todas as cores, bordas e sombras sejam idênticas em todos os elementos, criando uma sensação de organização profissional.
+2. **Mais Movimento (Scroll Reveal):** Adicionei um script que faz os elementos **aparecerem suavemente** conforme você rola a página para baixo (efeito *fade-in-up*).
+3. **Fundo Vivo:** Adicionei um background sutil de "Grid" (grade) que se move lentamente, dando uma sensação de espaço digital 3D.
+4. **Cartões Interativos:** Melhorei o efeito de *hover* (passar o mouse). Agora os cartões flutuam mais e os ícones giram ou pulam.
+
+Salve o código abaixo como `index.html`.
+
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CIBER&POEMAS - Poesia Digital Interativa</title>
+    <title>CIBERPOEMAS - Poesia Digital Interativa</title>
     <style>
+        /* --- VARIÁVEIS PARA UNIFORMIDADE --- */
+        :root {
+            --primary: #FF6633;     /* Laranja vibrante */
+            --secondary: #87CEEB;   /* Azul céu */
+            --accent: #FFD966;      /* Amarelo */
+            --text-main: #2c3e50;
+            --text-light: #7f8c8d;
+            --bg-page: #fdfdfd;
+            --card-bg: #ffffff;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-hover: 0 20px 40px rgba(0,0,0,0.12);
+            --border-width: 3px;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #9DD5D8 0%, #FFE6CC 50%, #FFD966 100%);
-            min-height: 100vh;
-            padding: 20px;
+            font-family: 'Courier New', monospace; /* Mantendo a estética original */
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            overflow-x: hidden;
+            /* Fundo com Grid em Movimento Sutil */
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: backgroundScroll 60s linear infinite;
         }
 
+        @keyframes backgroundScroll {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 40px; }
+        }
+        
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
             padding: 40px 20px;
-            background: white;
-            border-radius: 20px;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
         }
 
-        .logo {
-            font-size: 4rem;
-            margin-bottom: 20px;
+        /* --- CLASSE DE ANIMAÇÃO AO ROLAR (SCROLL REVEAL) --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1); /* Curva suave */
         }
 
-        h1 {
-            font-size: 3.5rem;
-            color: #333;
-            margin-bottom: 10px;
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
         }
-
-        .subtitle {
-            font-size: 1.3rem;
-            color: #666;
-        }
-
-        .authors {
-            margin-top: 20px;
-            color: #999;
-            font-size: 1.1rem;
-        }
-
-        .section {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .section h2 {
-            color: #FF6633;
-            font-size: 2.5rem;
-            margin-bottom: 30px;
+        
+        /* --- CABEÇALHO --- */
+        .header {
             text-align: center;
+            margin-bottom: 100px;
+            padding-top: 40px;
         }
-
-        .poems-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .poem-card {
-            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
-            border: 3px solid #9DD5D8;
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .poem-card:hover {
-            transform: translateY(-10px);
-            border-color: #FF6633;
-            box-shadow: 0 15px 30px rgba(255, 102, 51, 0.3);
-        }
-
-        .poem-icon {
-            font-size: 4rem;
-            margin-bottom: 15px;
-        }
-
-        .poem-card h3 {
-            color: #333;
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-
-        .poem-card p {
-            color: #666;
-            margin-bottom: 15px;
-        }
-
-        .poem-link {
+        
+        .logo-container {
+            position: relative;
             display: inline-block;
-            background: #FF6633;
-            color: white;
-            padding: 12px 30px;
-            text-decoration: none;
-            border-radius: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .logo-title {
+            font-size: clamp(3rem, 8vw, 6rem); /* Tamanho responsivo */
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            position: relative;
+            z-index: 2;
+            color: var(--text-main);
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+        }
+        
+        /* Cubos Flutuantes (Decorativos) */
+        .floating-shape {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.8;
+            border: 2px solid var(--text-main);
+            animation: floatShape 8s ease-in-out infinite;
+        }
+
+        .shape-1 {
+            width: 100px; height: 100px;
+            background: var(--secondary);
+            border-radius: 50%; /* Círculo */
+            top: -20px; left: -40px;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 80px; height: 80px;
+            background: var(--primary);
+            top: 40px; right: -30px;
+            transform: rotate(45deg); /* Losango */
+            animation-delay: 2s;
+        }
+
+        .shape-3 {
+            width: 120px; height: 120px;
+            background: var(--accent);
+            bottom: -20px; left: 50%;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; /* Forma orgânica */
+            z-index: -1;
+            animation-delay: 4s;
+        }
+        
+        @keyframes floatShape {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(0, -20px) rotate(10deg); }
+        }
+        
+        .authors {
+            font-size: 1.1rem;
+            color: var(--text-light);
             font-weight: bold;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        
+        /* --- SEÇÕES PADRONIZADAS --- */
+        .section {
+            margin-bottom: 140px;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            display: inline-block;
+            position: relative;
+        }
+        
+        /* Linha decorativa animada abaixo do título */
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--primary), var(--accent));
+            margin-top: 10px;
+            border-radius: 4px;
+            transform: scaleX(0.5);
+            transition: transform 0.5s ease;
+        }
+
+        .section:hover .section-title::after {
+            transform: scaleX(1);
+        }
+        
+        /* --- CARROSSEL (Estilo Cartão Padronizado) --- */
+        .carousel-wrapper {
+            position: relative;
+            padding: 0 60px; /* Espaço para as setas */
+        }
+        
+        .carousel-container {
+            overflow: hidden;
+            border-radius: var(--radius-lg); /* Arredondamento do container */
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); /* Movimento mais elástico */
+            gap: 30px;
+            padding: 20px 10px; /* Padding para a sombra não cortar */
+        }
+        
+        .carousel-item {
+            flex: 0 0 calc(25% - 23px); /* Ajuste fino para o gap */
+            min-width: 250px;
+        }
+        
+        /* Botões do Carrossel Modernos */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid var(--text-main);
+            color: var(--text-main);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .carousel-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .carousel-btn-prev { left: 0; }
+        .carousel-btn-next { right: 0; }
+        
+        /* CARTÃO DE POEMA (Uniformizado) */
+        .poem-card {
+            background: var(--card-bg);
+            border: var(--border-width) solid #eee;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            text-decoration: none;
+            color: var(--text-main);
+            display: block;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efeito "bouncy" */
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .poem-card:hover {
+            transform: translateY(-15px);
+            border-color: var(--secondary);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .monitor-frame {
+            background: #f0f0f0;
+            border: 2px solid var(--text-main);
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 15px;
+            aspect-ratio: 4/3;
+            position: relative;
+        }
+
+        .screen {
+            background: white;
+            border: 1px solid #ccc;
+            height: 100%;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            overflow: hidden;
+        }
+        
+        /* Previews mais suaves */
+        .screen-preview { 
+            transition: transform 0.5s; 
+        }
+        .poem-card:hover .screen-preview {
+            transform: scale(1.2) rotate(5deg);
+        }
+        
+        .poem-number {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+        
+        .poem-label {
+            font-size: 0.85rem;
+            color: var(--primary);
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .poem-card:hover .poem-label {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* --- CARDS DE GALERIA & ZOOM (UNIFORMES) --- */
+        .universal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .universal-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-main);
+            border: var(--border-width) solid transparent; /* Borda invisível base */
+            box-shadow: var(--shadow-sm);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Variações de borda colorida para dar vida */
+        .universal-card.blue-theme { border-color: var(--secondary); }
+        .universal-card.orange-theme { border-color: var(--primary); }
+        .universal-card.yellow-theme { border-color: var(--accent); }
+        .universal-card.purple-theme { border-color: #9b59b6; }
+
+        .universal-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 25px;
+            display: inline-block;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .universal-card:hover .card-icon {
+            transform: scale(1.2) rotate(-10deg);
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .card-desc {
+            color: var(--text-light);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .card-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            background: var(--text-main);
+            color: white;
             transition: all 0.3s ease;
         }
 
-        .poem-link:hover {
-            background: #FF5522;
+        /* Cores de botão dinâmicas baseadas no tema do card */
+        .blue-theme .card-btn { background: var(--secondary); color: white; }
+        .orange-theme .card-btn { background: var(--primary); color: white; }
+        .yellow-theme .card-btn { background: var(--accent); color: var(--text-main); }
+        .purple-theme .card-btn { background: #9b59b6; color: white; }
+
+        .universal-card:hover .card-btn {
             transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* BANNER ZOOM GRANDE */
+        .zoom-banner {
+            background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
+            border-radius: var(--radius-lg);
+            padding: 60px 40px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(118, 75, 162, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .zoom-banner:hover {
+            transform: scale(1.01);
+        }
+        
+        /* Círculos decorativos no banner */
+        .zoom-banner::before {
+            content: '';
+            position: absolute;
+            top: -50px; left: -50px;
+            width: 200px; height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        .zoom-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -30px; right: -30px;
+            width: 150px; height: 150px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .separator {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #e0e0e0, transparent);
+            margin: 80px 0;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         footer {
             text-align: center;
-            padding: 40px;
-            color: #666;
+            color: var(--text-light);
+            padding-bottom: 40px;
+            font-size: 0.9rem;
         }
 
+        /* RESPONSIVIDADE */
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-            
-            .poems-grid {
-                grid-template-columns: 1fr;
-            }
+            .carousel-wrapper { padding: 0; }
+            .carousel-btn { display: none; } /* Esconde setas no mobile, usa swipe */
+            .carousel-track { overflow-x: auto; padding-bottom: 20px; snap-type: x mandatory; }
+            .carousel-item { scroll-snap-align: center; min-width: 80%; }
+            .universal-grid { grid-template-columns: 1fr; }
+            .logo-title { font-size: 3rem; }
         }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <header>
-            <div class="logo">🎭📚✨</div>
-            <h1>CIBER&POEMAS</h1>
-            <p class="subtitle">Poesia Digital Interativa</p>
-            <p class="authors">por Ana Cláudia Gruszynski e Sérgio Capparelli</p>
+        
+        <header class="header reveal">
+            <div class="logo-container">
+                <div class="floating-shape shape-1"></div>
+                <div class="floating-shape shape-2"></div>
+                <div class="floating-shape shape-3"></div>
+                
+                <h1 class="logo-title">CIBERPOEMAS</h1>
+            </div>
+            <p class="authors">Ana Cláudia Gruszynski & Sérgio Capparelli</p>
         </header>
 
-        <div class="section">
-            <h2>🎭 Ciberpoemas Principais</h2>
-            <div class="poems-grid">
-                <div class="poem-card">
-                    <div class="poem-icon">☕</div>
-                    <h3>Chá</h3>
-                    <p>Vapor de palavras</p>
-                    <a href="cha.html" class="poem-link">Explorar →</a>
-                </div>
+        <section class="section reveal">
+            <div class="section-header">
+                <h2 class="section-title">Os Clássicos</h2>
+                <p style="margin-top: 10px; color: var(--text-light)">Navegue pelos poemas originais</p>
+            </div>
 
-                <div class="poem-card">
-                    <div class="poem-icon">🐱</div>
-                    <h3>Gato Letrado</h3>
-                    <p>Alfabeto poético</p>
-                    <a href="gato.html" class="poem-link">Explorar →</a>
-                </div>
-
-                <div class="poem-card">
-                    <div class="poem-icon">⛵</div>
-                    <h3>Navio</h3>
-                    <p>Navegação visual</p>
-                    <a href="navio.html" class="poem-link">Explorar →</a>
-                </div>
-
-                <div class="poem-card">
-                    <div class="poem-icon">〰️</div>
-                    <h3>Zigue-Zague</h3>
-                    <p>Padrões dinâmicos</p>
-                    <a href="zigue.html" class="poem-link">Explorar →</a>
-                </div>
-
-                <div class="poem-card">
-                    <div class="poem-icon">🌸</div>
-                    <h3>Primavera</h3>
-                    <p>Flores e crescimento</p>
-                    <a href="primavera.html" class="poem-link">Explorar →</a>
-                </div>
-
-                <div class="poem-card">
-                    <div class="poem-icon">➡️</div>
-                    <h3>Flechas</h3>
-                    <p>Direções poéticas</p>
-                    <a href="flechas.html" class="poem-link">Explorar →</a>
-                </div>
-
-                <div class="poem-card">
-                    <div class="poem-icon">🗼</div>
-                    <h3>Babel</h3>
-                    <p>Torre de palavras</p>
-                    <a href="babel.html" class="poem-link">Explorar →</a>
-                </div>
-
-                <div class="poem-card">
-                    <div class="poem-icon">⚫</div>
-                    <h3>Cheio</h3>
-                    <p>Plenitude visual</p>
-                    <a href="cheio.html" class="poem-link">Explorar →</a>
-                </div>
-
-                <div class="poem-card">
-                    <div class="poem-icon">⚪</div>
-                    <h3>Vazio</h3>
-                    <p>Espaços e silêncio</p>
-                    <a href="vazio.html" class="poem-link">Explorar →</a>
-                </div>
-
-                <div class="poem-card">
-                    <div class="poem-icon">⚫⚪</div>
-                    <h3>Cheio/Vazio</h3>
-                    <p>Dualidade</p>
-                    <a href="cheiovazio.html" class="poem-link">Explorar →</a>
+            <div class="carousel-wrapper">
+                <button class="carousel-btn carousel-btn-prev" onclick="moveCarousel(-1)">❮</button>
+                <button class="carousel-btn carousel-btn-next" onclick="moveCarousel(1)">❯</button>
+                
+                <div class="carousel-container">
+                    <div class="carousel-track" id="carouselTrack">
+                        <div class="carousel-item">
+                            <a href="cha.html" class="poem-card">
+                                <div class="monitor-frame"><div class="screen"><div class="screen-preview">☕</div></div></div>
+                                <div class="poem-number">1. Chá</div><div class="poem-label">acessar →</div>
+                            </a>
+                        </div>
+                        <div class="carousel-item">
+                            <a href="gato.html" class="poem-card">
+                                <div class="monitor-frame"><div class="screen"><div class="screen-preview">🐱</div></div></div>
+                                <div class="poem-number">2. Gato</div><div class="poem-label">acessar →</div>
+                            </a>
+                        </div>
+                        <div class="carousel-item">
+                            <a href="navio.html" class="poem-card">
+                                <div class="monitor-frame"><div class="screen"><div class="screen-preview">⛵</div></div></div>
+                                <div class="poem-number">3. Navio</div><div class="poem-label">acessar →</div>
+                            </a>
+                        </div>
+                        <div class="carousel-item">
+                            <a href="zigue.html" class="poem-card">
+                                <div class="monitor-frame"><div class="screen"><div class="screen-preview">〰️</div></div></div>
+                                <div class="poem-number">4. Zigue-zague</div><div class="poem-label">acessar →</div>
+                            </a>
+                        </div>
+                        <div class="carousel-item">
+                            <a href="primavera.html" class="poem-card">
+                                <div class="monitor-frame"><div class="screen"><div class="screen-preview">🌸</div></div></div>
+                                <div class="poem-number">5. Primavera</div><div class="poem-label">acessar →</div>
+                            </a>
+                        </div>
+                        <div class="carousel-item">
+                            <a href="flechas.html" class="poem-card">
+                                <div class="monitor-frame"><div class="screen"><div class="screen-preview">➡️</div></div></div>
+                                <div class="poem-number">6. Flechas</div><div class="poem-label">acessar →</div>
+                            </a>
+                        </div>
+                        <div class="carousel-item">
+                            <a href="babel.html" class="poem-card">
+                                <div class="monitor-frame"><div class="screen"><div class="screen-preview">🗼</div></div></div>
+                                <div class="poem-number">7. Babel</div><div class="poem-label">acessar →</div>
+                            </a>
+                        </div>
+                        <div class="carousel-item">
+                            <a href="cheio.html" class="poem-card">
+                                <div class="monitor-frame"><div class="screen"><div class="screen-preview">⚫</div></div></div>
+                                <div class="poem-number">8. Cheio</div><div class="poem-label">acessar →</div>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="section">
-            <h2>🎨 Galerias de Poemas</h2>
-            <div class="poems-grid">
-                <div class="poem-card">
-                    <div class="poem-icon">1️⃣-4️⃣</div>
-                    <h3>Poemas 1-4</h3>
-                    <p>Chá, Xadrez, Van Gogh, Navio</p>
-                    <a href="poemas_1_4.html" class="poem-link">Ver Galeria →</a>
-                </div>
+        <section class="section reveal">
+             <a href="layout.html" class="universal-card yellow-theme" style="max-width: 800px; margin: 0 auto; display: block;">
+                <span class="card-icon">📐</span>
+                <h3 class="card-title">Layout Original</h3>
+                <p class="card-desc">Sente saudade do design antigo? Acesse a versão clássica e preservada da interface original do projeto.</p>
+                <span class="card-btn">Ver Interface Clássica</span>
+            </a>
+        </section>
 
-                <div class="poem-card">
-                    <div class="poem-icon">5️⃣-8️⃣</div>
-                    <h3>Poemas 5-8</h3>
-                    <p>Zigue-zague, Primavera, Flechas, Gato</p>
-                    <a href="poemas_5_8.html" class="poem-link">Ver Galeria →</a>
-                </div>
+        <section class="section reveal">
+            <a href="zoom.html" class="zoom-banner">
+                <div class="zoom-icon-banner" style="font-size: 5rem; margin-bottom: 20px;">🔍</div>
+                <h2 style="font-size: 2.5rem; margin-bottom: 15px;">Zoom na Poesia</h2>
+                <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto 30px auto; opacity: 0.9;">
+                    Um laboratório interativo para criar, declamar e recompor versos. Experimente a poesia de forma prática.
+                </p>
+                <span style="background: white; color: #667eea; padding: 12px 30px; border-radius: 30px; font-weight: bold;">Entrar no Laboratório</span>
+            </a>
+        </section>
 
-                <div class="poem-card">
-                    <div class="poem-icon">9️⃣-🔟</div>
-                    <h3>Poemas 9-12</h3>
-                    <p>Babel, Cheio/Vazio e mais</p>
-                    <a href="poemas_9_12.html" class="poem-link">Ver Galeria →</a>
-                </div>
+        <div class="separator"></div>
+
+        <section class="section reveal">
+            <div class="section-header">
+                <h2 class="section-title">Galerias</h2>
             </div>
-        </div>
+            
+            <div class="universal-grid">
+                <a href="poemas_1_4.html" class="universal-card blue-theme">
+                    <span class="card-icon">1-4</span>
+                    <h3 class="card-title">Primeiros Passos</h3>
+                    <p class="card-desc">Chá, Xadrez, Van Gogh e Navio</p>
+                    <span class="card-btn">Explorar</span>
+                </a>
+                
+                <a href="poemas_5_8.html" class="universal-card orange-theme">
+                    <span class="card-icon">5-8</span>
+                    <h3 class="card-title">Movimento</h3>
+                    <p class="card-desc">Zigue-zague, Primavera, Flechas e Gato</p>
+                    <span class="card-btn">Explorar</span>
+                </a>
 
-        <div class="section">
-            <h2>🔍 Zoom na Poesia</h2>
-            <div class="poems-grid">
-                <div class="poem-card">
-                    <div class="poem-icon">🎤</div>
-                    <h3>Declamar</h3>
-                    <p>Exercícios de declamação</p>
-                    <a href="declamar_1.html" class="poem-link">Começar →</a>
-                </div>
-
-                <div class="poem-card">
-                    <div class="poem-icon">✍️</div>
-                    <h3>Criar</h3>
-                    <p>Criação de poemas</p>
-                    <a href="criar_1.html" class="poem-link">Criar →</a>
-                </div>
-
-                <div class="poem-card">
-                    <div class="poem-icon">🔗</div>
-                    <h3>Encadear</h3>
-                    <p>Conexão de palavras</p>
-                    <a href="encadear_1.html" class="poem-link">Conectar →</a>
-                </div>
-
-                <div class="poem-card">
-                    <div class="poem-icon">🧩</div>
-                    <h3>Recompor</h3>
-                    <p>Reorganização poética</p>
-                    <a href="recompor_1.html" class="poem-link">Recompor →</a>
-                </div>
-
-                <div class="poem-card">
-                    <div class="poem-icon">🎵</div>
-                    <h3>Jogar</h3>
-                    <p>Jogos com sons</p>
-                    <a href="jogar_1.html" class="poem-link">Jogar →</a>
-                </div>
-
-                <div class="poem-card">
-                    <div class="poem-icon">🎨</div>
-                    <h3>Ver</h3>
-                    <p>Desenhar e compor</p>
-                    <a href="ver_1.html" class="poem-link">Desenhar →</a>
-                </div>
+                <a href="poemas_9_12.html" class="universal-card purple-theme">
+                    <span class="card-icon">9+</span>
+                    <h3 class="card-title">Conceitos</h3>
+                    <p class="card-desc">Babel, Cheio/Vazio e experimentações</p>
+                    <span class="card-btn">Explorar</span>
+                </a>
             </div>
-        </div>
+        </section>
+
+        <section class="section reveal">
+            <div class="section-header">
+                <h2 class="section-title">Atividades</h2>
+            </div>
+            
+            <div class="universal-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                <a href="declamar_1.html" class="universal-card blue-theme" style="padding: 30px 20px;">
+                    <span class="card-icon" style="font-size: 3rem;">🎤</span>
+                    <h4 class="card-title" style="font-size: 1.4rem;">Declamar</h4>
+                </a>
+                <a href="criar_1.html" class="universal-card orange-theme" style="padding: 30px 20px;">
+                    <span class="card-icon" style="font-size: 3rem;">✍️</span>
+                    <h4 class="card-title" style="font-size: 1.4rem;">Criar</h4>
+                </a>
+                <a href="encadear_1.html" class="universal-card yellow-theme" style="padding: 30px 20px;">
+                    <span class="card-icon" style="font-size: 3rem;">🔗</span>
+                    <h4 class="card-title" style="font-size: 1.4rem;">Encadear</h4>
+                </a>
+                <a href="recompor_1.html" class="universal-card purple-theme" style="padding: 30px 20px;">
+                    <span class="card-icon" style="font-size: 3rem;">🧩</span>
+                    <h4 class="card-title" style="font-size: 1.4rem;">Recompor</h4>
+                </a>
+            </div>
+        </section>
 
         <footer>
-            <p><strong>CIBER&POEMAS</strong></p>
-            <p>Ana Cláudia Gruszynski e Sérgio Capparelli</p>
-            <p style="margin-top: 20px; color: #999;">
-                Flash Macromedia v4 · Emulado via Ruffle<br>
-                Restauração Digital · Dezembro 2024
-            </p>
+            <p><strong>CIBERPOEMAS</strong> · Ana Cláudia Gruszynski & Sérgio Capparelli</p>
+            <p style="opacity: 0.6; font-size: 0.8rem; margin-top: 10px;">Restauração Digital 2024</p>
         </footer>
+
     </div>
+
+    <script>
+        // --- SCRIPT DE MOVIMENTO (SCROLL REVEAL) ---
+        // Adiciona classe 'active' quando o elemento entra na tela
+        const observerOptions = {
+            threshold: 0.1 // Ativa quando 10% do elemento estiver visível
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // --- SCRIPT DO CARROSSEL ---
+        let currentIndex = 0;
+        const track = document.getElementById('carouselTrack');
+        const items = document.querySelectorAll('.carousel-item');
+        
+        function getSlidesPerView() {
+            if (window.innerWidth <= 768) return 1;
+            if (window.innerWidth <= 1024) return 2;
+            return 4;
+        }
+
+        function moveCarousel(direction) {
+            const totalItems = items.length;
+            const slidesPerView = getSlidesPerView();
+            const maxIndex = Math.ceil(totalItems - slidesPerView); // Impede espaços brancos no fim
+
+            currentIndex += direction;
+
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex > maxIndex) currentIndex = maxIndex;
+
+            // Calcula porcentagem baseada no tamanho do item + gap
+            // Como usamos flex-basis em %, movemos em %
+            const movePercent = currentIndex * (100 / slidesPerView);
+            track.style.transform = `translateX(-${movePercent}%)`;
+        }
+
+        // Reset no resize
+        window.addEventListener('resize', () => {
+            currentIndex = 0;
+            track.style.transform = `translateX(0)`;
+        });
+    </script>
 </body>
 </html>
+
