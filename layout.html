@@ -23,7 +23,7 @@
         
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         
         h1 {
@@ -67,19 +67,21 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
         
-        #ruffle-player {
-            width: 800px;
-            height: 600px;
+        #ruffle-container {
+            width: 100%;
+            max-width: 1200px;
+            height: 700px;
             background: #000;
             border-radius: 10px;
+            overflow: hidden;
             box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
         
-        @media (max-width: 900px) {
-            #ruffle-player {
-                width: 100%;
-                height: 500px;
-            }
+        #loading-message {
+            color: #666;
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2rem;
         }
         
         @media (max-width: 768px) {
@@ -87,8 +89,8 @@
                 font-size: 1.8rem;
             }
             
-            #ruffle-player {
-                height: 400px;
+            #ruffle-container {
+                height: 500px;
             }
         }
     </style>
@@ -101,53 +103,28 @@
     </div>
     
     <div class="flash-container">
-        <div id="ruffle-player"></div>
+        <div id="ruffle-container">
+            <div id="loading-message">⏳ Carregando layout original...</div>
+        </div>
     </div>
 
     <script>
         window.RufflePlayer = window.RufflePlayer || {};
-        window.RufflePlayer.config = {
-            publicPath: undefined,
-            polyfills: true,
-            autoplay: "on",
-            unmuteOverlay: "hidden",
-            backgroundColor: "#000000",
-            letterbox: "on",
-            warnOnUnsupportedContent: false,
-            logLevel: "error",
-            showSwfDownload: false,
-            contextMenu: "on",
-            preloader: true,
-            splashScreen: true,
-            maxExecutionDuration: 15,
-            base: "",
-            menu: true,
-            allowScriptAccess: false,
-            quality: "high",
-            scale: "showAll"
-        };
-
-        window.addEventListener("load", function() {
+        window.addEventListener("load", () => {
             const ruffle = window.RufflePlayer.newest();
-            const player = Object.assign(document.createElement("ruffle-player"), {
-                style: "width: 100%; height: 100%",
-            });
+            const player = ruffle.createPlayer();
+            const container = document.getElementById("ruffle-container");
             
-            const container = document.getElementById("ruffle-player");
+            // Limpar mensagem de loading
+            container.innerHTML = '';
             container.appendChild(player);
             
-            player.load({
-                url: "layout.swf",
-                parameters: "",
-                autoplay: true,
-                backgroundColor: "#000000",
-                letterbox: "on",
-                unmuteOverlay: "hidden",
-                upgradeToHttps: false,
-                warnOnUnsupportedContent: false,
-                logLevel: "error",
-                showSwfDownload: false
-            });
+            // Configurar player
+            player.style.width = "100%";
+            player.style.height = "100%";
+            
+            // Carregar o SWF
+            player.load("layout.swf");
         });
     </script>
 </body>
