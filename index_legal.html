@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIBER&POEMAS - Poesia Digital Interativa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #9DD5D8 0%, #FFE6CC 50%, #FFD966 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #666;
+        }
+
+        .authors {
+            margin-top: 20px;
+            color: #999;
+            font-size: 1.1rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #FF6633;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .poems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .poem-card {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            border: 3px solid #9DD5D8;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .poem-card:hover {
+            transform: translateY(-10px);
+            border-color: #FF6633;
+            box-shadow: 0 15px 30px rgba(255, 102, 51, 0.3);
+        }
+
+        .poem-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .poem-card h3 {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .poem-card p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .poem-link {
+            display: inline-block;
+            background: #FF6633;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .poem-link:hover {
+            background: #FF5522;
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .poems-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">🎭📚✨</div>
+            <h1>CIBER&POEMAS</h1>
+            <p class="subtitle">Poesia Digital Interativa</p>
+            <p class="authors">por Ana Cláudia Gruszynski e Sérgio Capparelli</p>
+        </header>
+
+        <div class="section">
+            <h2>🎭 Ciberpoemas Principais</h2>
+            <div class="poems-grid">
+                <div class="poem-card">
+                    <div class="poem-icon">☕</div>
+                    <h3>Chá</h3>
+                    <p>Vapor de palavras</p>
+                    <a href="cha.html" class="poem-link">Explorar →</a>
+                </div>
+
+                <div class="poem-card">
+                    <div class="poem-icon">🐱</div>
+                    <h3>Gato Letrado</h3>
+                    <p>Alfabeto poético</p>
+                    <a href="gato.html" class="poem-link">Explorar →</a>
+                </div>
+
+                <div class="poem-card">
+                    <div class="poem-icon">⛵</div>
+                    <h3>Navio</h3>
+                    <p>Navegação visual</p>
+                    <a href="navio.html" class="poem-link">Explorar →</a>
+                </div>
+
+                <div class="poem-card">
+                    <div class="poem-icon">〰️</div>
+                    <h3>Zigue-Zague</h3>
+                    <p>Padrões dinâmicos</p>
+                    <a href="zigue.html" class="poem-link">Explorar →</a>
+                </div>
+
+                <div class="poem-card">
+                    <div class="poem-icon">🌸</div>
+                    <h3>Primavera</h3>
+                    <p>Flores e crescimento</p>
+                    <a href="primavera.html" class="poem-link">Explorar →</a>
+                </div>
+
+                <div class="poem-card">
+                    <div class="poem-icon">➡️</div>
+                    <h3>Flechas</h3>
+                    <p>Direções poéticas</p>
+                    <a href="flechas.html" class="poem-link">Explorar →</a>
+                </div>
+
+                <div class="poem-card">
+                    <div class="poem-icon">🗼</div>
+                    <h3>Babel</h3>
+                    <p>Torre de palavras</p>
+                    <a href="babel.html" class="poem-link">Explorar →</a>
+                </div>
+
+                <div class="poem-card">
+                    <div class="poem-icon">⚫</div>
+                    <h3>Cheio</h3>
+                    <p>Plenitude visual</p>
+                    <a href="cheio.html" class="poem-link">Explorar →</a>
+                </div>
+
+                <div class="poem-card">
+                    <div class="poem-icon">⚪</div>
+                    <h3>Vazio</h3>
+                    <p>Espaços e silêncio</p>
+                    <a href="vazio.html" class="poem-link">Explorar →</a>
+                </div>
+
+                <div class="poem-card">
+                    <div class="poem-icon">⚫⚪</div>
+                    <h3>Cheio/Vazio</h3>
+                    <p>Dualidade</p>
+                    <a href="cheiovazio.html" class="poem-link">Explorar →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎨 Galerias de Poemas</h2>
+            <div class="poems-grid">
+                <div class="poem-card">
+                    <div class="poem-icon">1️⃣-4️⃣</div>
+                    <h3>Poemas 1-4</h3>
+                    <p>Chá, Xadrez, Van Gogh, Navio</p>
+                    <a href="poemas_1_4.html" class="poem-link">Ver Galeria →</a>
+                </div>
+
+                <div class="poem-card">
+                    <div class="poem-icon">5️⃣-8️⃣</div>
+                    <h3>Poemas 5-8</h3>
+                    <p>Zigue-zague, Primavera, Flechas, Gato</p>
+                    <a href="poemas_5_8.html" class="poem-link">Ver Galeria →</a>
+                </div>
+
+                <div class="poem-card">
+                    <div class="poem-icon">9️⃣-🔟</div>
+                    <h3>Poemas 9-12</h3>
+                    <p>Babel, Cheio/Vazio e mais</p>
+                    <a href="poemas_9_12.html" class="poem-link">Ver Galeria →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔍 Zoom na Poesia</h2>
+            <div class="poems-grid">
+                <div class="poem-card">
+                    <div class="poem-icon">🎤</div>
+                    <h3>Declamar</h3>
+                    <p>Exercícios de declamação</p>
+                    <a href="declamar_1.html" class="poem-link">Começar →</a>
+                </div>
+
+                <div class="poem-card">
+                    <div class="poem-icon">✍️</div>
+                    <h3>Criar</h3>
+                    <p>Criação de poemas</p>
+                    <a href="criar_1.html" class="poem-link">Criar →</a>
+                </div>
+
+                <div class="poem-card">
+                    <div class="poem-icon">🔗</div>
+                    <h3>Encadear</h3>
+                    <p>Conexão de palavras</p>
+                    <a href="encadear_1.html" class="poem-link">Conectar →</a>
+                </div>
+
+                <div class="poem-card">
+                    <div class="poem-icon">🧩</div>
+                    <h3>Recompor</h3>
+                    <p>Reorganização poética</p>
+                    <a href="recompor_1.html" class="poem-link">Recompor →</a>
+                </div>
+
+                <div class="poem-card">
+                    <div class="poem-icon">🎵</div>
+                    <h3>Jogar</h3>
+                    <p>Jogos com sons</p>
+                    <a href="jogar_1.html" class="poem-link">Jogar →</a>
+                </div>
+
+                <div class="poem-card">
+                    <div class="poem-icon">🎨</div>
+                    <h3>Ver</h3>
+                    <p>Desenhar e compor</p>
+                    <a href="ver_1.html" class="poem-link">Desenhar →</a>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>CIBER&POEMAS</strong></p>
+            <p>Ana Cláudia Gruszynski e Sérgio Capparelli</p>
+            <p style="margin-top: 20px; color: #999;">
+                Flash Macromedia v4 · Emulado via Ruffle<br>
+                Restauração Digital · Dezembro 2024
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
