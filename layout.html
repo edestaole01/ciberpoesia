@@ -65,7 +65,6 @@
             border-radius: 15px;
             padding: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            position: relative;
         }
         
         #ruffle-container {
@@ -76,19 +75,6 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            position: relative;
-        }
-        
-        /* Overlay PERMANENTE para esconder área de loading */
-        #loading-blocker {
-            position: absolute;
-            top: 33%;
-            left: 25%;
-            right: 25%;
-            height: 100px;
-            background: #000;
-            z-index: 999;
-            pointer-events: none;
         }
         
         @media (max-width: 768px) {
@@ -98,11 +84,6 @@
             
             #ruffle-container {
                 height: 500px;
-            }
-            
-            #loading-blocker {
-                left: 15%;
-                right: 15%;
             }
         }
     </style>
@@ -115,10 +96,7 @@
     </div>
     
     <div class="flash-container">
-        <div id="ruffle-container">
-            <!-- Overlay permanente para bloquear a área de loading -->
-            <div id="loading-blocker"></div>
-        </div>
+        <div id="ruffle-container"></div>
     </div>
 
     <script>
@@ -129,14 +107,10 @@
             const player = ruffle.createPlayer();
             const container = document.getElementById("ruffle-container");
             
-            // Adicionar player antes do blocker
-            container.insertBefore(player, container.firstChild);
+            container.appendChild(player);
             
             player.style.width = "100%";
             player.style.height = "100%";
-            player.style.position = "absolute";
-            player.style.top = "0";
-            player.style.left = "0";
             
             player.load("layout.swf");
         });
