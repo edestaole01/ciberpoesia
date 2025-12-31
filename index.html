@@ -146,26 +146,31 @@
             to { width: 250px; }
         }
         
-        /* CARROSSEL */
-        .carousel-wrapper {
+       /* CARROSSEL */
+       .carousel-wrapper {
             position: relative;
-            padding: 0 100px;
+            padding: 0 60px; /* Reduzi um pouco para dar mais espaço aos itens */
             margin-bottom: 40px;
         }
         
         .carousel-container {
             overflow: hidden;
+            width: 100%; /* Garante largura total */
         }
         
         .carousel-track {
             display: flex;
             transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            gap: 40px;
+            gap: 0; /* IMPORTANTE: Removido o gap para não quebrar o cálculo */
+            width: 100%;
         }
         
         .carousel-item {
-            flex: 0 0 calc(25% - 30px);
-            min-width: calc(25% - 30px);
+            /* Lógica baseada em porcentagem pura para alinhar com o JS */
+            flex: 0 0 25%; 
+            min-width: 25%;
+            padding: 0 15px; /* O espaçamento visual é feito aqui agora */
+            box-sizing: border-box; /* Garante que o padding não aumente a largura */
             animation: fadeInUp 0.6s ease-out backwards;
         }
         
@@ -189,17 +194,21 @@
             position: absolute;
             top: 40%;
             transform: translateY(-50%);
-            width: 70px;
-            height: 70px;
+            width: 50px; /* Ajustei para ficar mais proporcional */
+            height: 50px;
             border-radius: 50%;
             background: linear-gradient(135deg, #FF6633, #FF5522);
             border: none;
             color: white;
-            font-size: 2rem;
+            font-size: 1.5rem;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 5px 20px rgba(255, 102, 51, 0.4);
             z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 4px; /* Ajuste visual da seta */
         }
         
         .carousel-btn:hover {
@@ -236,6 +245,37 @@
             background: #FF6633;
             transform: scale(1.4);
             box-shadow: 0 0 10px rgba(255, 102, 51, 0.5);
+        }
+
+        /* MEDIA QUERIES PARA O CARROSSEL (Responsivo) */
+        /* Substitua também a parte de media queries no final do CSS por esta lógica */
+        @media (max-width: 1200px) {
+            .carousel-item {
+                flex: 0 0 33.333%; /* 3 itens por vez */
+                min-width: 33.333%;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .carousel-item {
+                flex: 0 0 50%; /* 2 itens por vez */
+                min-width: 50%;
+            }
+            .logo-title { font-size: 3rem; }
+            .zoom-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 640px) {
+            .carousel-item {
+                flex: 0 0 100%; /* 1 item por vez */
+                min-width: 100%;
+                padding: 0 40px; /* Mais padding no mobile para centralizar visualmente */
+            }
+            .carousel-wrapper {
+                padding: 0 20px;
+            }
+            .gallery-grid, .zoom-grid { grid-template-columns: 1fr; }
+            .color-box { display: none; }
         }
         
         /* COMPUTADOR ESTILO DESENHO (como na imagem) */
