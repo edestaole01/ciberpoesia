@@ -11,7 +11,7 @@
         html, body {
             width: 100%;
             height: 100%;
-            overflow: hidden; /* Impede rolagem da página inteira */
+            overflow: hidden; /* Impede rolagem */
             background: #FFF5E6;
             font-family: 'Courier New', monospace;
         }
@@ -25,7 +25,6 @@
             justify-content: center;
             padding: 15px;
             z-index: 1;
-            /* Permite que o player cresça além dos limites se necessário (para o zoom) */
             overflow: visible; 
         }
 
@@ -33,23 +32,19 @@
         #player {
             width: 100%;
             max-width: 550px; 
-            aspect-ratio: 550 / 390; 
-            
+            aspect-ratio: 550 / 390; /* Mantém proporção */
             background: #fafafa;
             border: 1px solid #ddd;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
-
-            /* ISSO QUE ESTAVA FALTANDO PARA O ZOOM FUNCIONAR: */
             transform-origin: center center;
             transition: transform 0.3s ease;
         }
 
-        /* =CLASSES DE ZOOM (RECOLOCADAS)= */
+        /* =CLASSES DE ZOOM (Necessárias para os botões funcionarem)= */
         #player.zoom-1 { transform: scale(1.5); }
         #player.zoom-2 { transform: scale(2.0); }
         #player.zoom-3 { transform: scale(2.5); }
@@ -64,7 +59,7 @@
             display: block;
         }
 
-        /* =INTERFACE (BOTÕES E MENUS)= */
+        /* =INTERFACE (Botões)= */
         .controls {
             position: fixed;
             bottom: 20px;
@@ -73,14 +68,9 @@
             flex-direction: column;
             gap: 8px;
             z-index: 10000;
-            transition: transform 0.3s ease, opacity 0.3s ease;
+            transition: transform 0.3s ease;
         }
-
-        .controls.hidden {
-            transform: translateX(120%);
-            opacity: 0;
-            pointer-events: none;
-        }
+        .controls.hidden { transform: translateX(120%); pointer-events: none; }
 
         .btn {
             background: rgba(255, 255, 255, 0.9);
@@ -100,13 +90,7 @@
             min-width: 140px;
             transition: all 0.2s;
         }
-
-        .btn:hover {
-            background: #FF6633;
-            color: white;
-            transform: scale(1.05);
-        }
-
+        .btn:hover { background: #FF6633; color: white; transform: scale(1.05); }
         .btn-primary { background: #FF6633; color: white; }
 
         .menu-toggle {
@@ -127,7 +111,6 @@
             justify-content: center;
             box-shadow: 0 4px 15px rgba(255,102,51,0.4);
         }
-
         .menu-toggle.active { display: flex; }
 
         .poem-title {
@@ -145,7 +128,6 @@
             transition: top 0.5s ease, opacity 0.5s ease;
             white-space: nowrap;
         }
-
         .poem-title.hidden { top: -100px; opacity: 0; }
 
         .start-screen {
@@ -159,9 +141,9 @@
             z-index: 20000;
             transition: opacity 0.5s ease;
         }
-
         .start-screen.hidden { opacity: 0; pointer-events: none; }
-        .start-title { font-size: 4rem; color: #333; margin-bottom: 40px; }
+        
+        .start-title { font-size: 4rem; color: #333; margin-bottom: 40px; text-align: center; }
         
         .start-btn {
             background: linear-gradient(135deg, #FF6633, #FF9966);
@@ -196,7 +178,6 @@
         }
         .zoom-indicator.show { opacity: 1; }
 
-        /* =AJUSTES PARA CELULAR= */
         @media (max-width: 600px) {
             .poem-title { font-size: 1.5rem; padding: 8px 20px; top: 15px; }
             .start-title { font-size: 2.5rem; }
