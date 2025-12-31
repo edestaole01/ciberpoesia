@@ -10,19 +10,31 @@
             flex-direction: column; 
             justify-content: center; 
             align-items: center; 
-            min-height: 100vh; /* Garante altura total mesmo no celular */
+            min-height: 100vh; 
             background: #fff; 
             font-family: sans-serif;
-            padding: 20px; /* Margem de segurança para não colar na borda do celular */
+            padding: 20px; 
             box-sizing: border-box;
         }
 
         #player { 
-            width: 100%; /* Ocupa toda a largura disponível... */
-            max-width: 550px; /* ...até chegar no máximo de 550px */
-            aspect-ratio: 550 / 390; /* Mantém a proporção exata do original */
+            width: 100%; 
+            max-width: 550px; 
+            aspect-ratio: 550 / 390; /* Mantém a proporção exata */
             border: 1px solid #ddd; 
-            background: #fafafa; 
+            background: #fafafa;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            /* Garante que o player fique centralizado */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ESTA É A PARTE IMPORTANTE PARA O CELULAR: */
+        /* Força o desenho a esticar e preencher a caixa */
+        ruffle-player {
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
