@@ -4,227 +4,207 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chá - Ciberpoema</title>
-          <style>
-            /* =ZERA TUDO E DEFINE O FUNDO= */
-            * { margin: 0; padding: 0; box-sizing: border-box; }
+    <style>
+        /* =ZERA TUDO E DEFINE O FUNDO= */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Impede rolagem da página inteira */
+            background: #FFF5E6;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* =CONTAINER DO PLAYER= */
+        #player-wrapper {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            z-index: 1;
+            /* Permite que o player cresça além dos limites se necessário (para o zoom) */
+            overflow: visible; 
+        }
+
+        /* =A CAIXA DO FLASH= */
+        #player {
+            width: 100%;
+            max-width: 550px; 
+            aspect-ratio: 550 / 390; 
             
-            html, body {
-                width: 100%;
-                height: 100%; /* Garante altura total */
-                overflow: hidden; /* Impede rolagem indesejada */
-                background: #FFF5E6; /* Cor creme do fundo original */
-                font-family: 'Courier New', monospace; /* Fonte estilo máquina de escrever */
-            }
-        
-            /* =CONTAINER DO PLAYER (O segredo da responsividade)= */
-            #player-wrapper {
-                position: absolute;
-                inset: 0; /* Ocupa a tela toda */
-                display: flex;
-                align-items: center;     /* Centraliza verticalmente */
-                justify-content: center; /* Centraliza horizontalmente */
-                padding: 15px; /* Margem de segurança para não colar na borda do celular */
-                z-index: 1;
-            }
-        
-            /* =A CAIXA DO FLASH= */
-            #player {
-                /* LARGURA: Tenta ser 100% da tela, mas para em 550px (tamanho original) */
-                width: 100%;
-                max-width: 550px; 
-                
-                /* PROPORÇÃO: Calcula a altura automaticamente baseada na largura */
-                /* Isso impede que o desenho fique esticado ou achatado */
-                aspect-ratio: 550 / 390; 
-                
-                background: #fafafa; /* Fundo enquanto carrega */
-                border: 1px solid #ddd;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* Sombra suave */
-                
-                /* Garante que o conteúdo interno fique no meio */
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                position: relative;
-            }
-        
-            /* =FORÇA O RUFFLE A OBEDECER= */
-            /* Isso é crucial para o celular: manda o player esticar dentro da caixa */
-            ruffle-player {
-                width: 100% !important;
-                height: 100% !important;
-                display: block;
-            }
-        
-            /* =INTERFACE (BOTÕES E MENUS)= */
+            background: #fafafa;
+            border: 1px solid #ddd;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             
-            /* Menu de controles (Canto Inferior Direito) */
-            .controls {
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-                z-index: 10000;
-                transition: transform 0.3s ease, opacity 0.3s ease;
-            }
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+
+            /* ISSO QUE ESTAVA FALTANDO PARA O ZOOM FUNCIONAR: */
+            transform-origin: center center;
+            transition: transform 0.3s ease;
+        }
+
+        /* =CLASSES DE ZOOM (RECOLOCADAS)= */
+        #player.zoom-1 { transform: scale(1.5); }
+        #player.zoom-2 { transform: scale(2.0); }
+        #player.zoom-3 { transform: scale(2.5); }
+        #player.zoom-4 { transform: scale(3.0); }
+        #player.zoom-5 { transform: scale(3.5); }
+        #player.zoom-max { transform: scale(4.0); }
+
+        /* =RUFFLE= */
+        ruffle-player {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+
+        /* =INTERFACE (BOTÕES E MENUS)= */
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 10000;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .controls.hidden {
+            transform: translateX(120%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border: 2px solid #FF6633;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            min-width: 140px;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #FF6633;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .btn-primary { background: #FF6633; color: white; }
+
+        .menu-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #FF6633;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255,102,51,0.4);
+        }
+
+        .menu-toggle.active { display: flex; }
+
+        .poem-title {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.9);
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-size: 2rem;
+            color: #333;
+            z-index: 9999;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: top 0.5s ease, opacity 0.5s ease;
+            white-space: nowrap;
+        }
+
+        .poem-title.hidden { top: -100px; opacity: 0; }
+
+        .start-screen {
+            position: fixed;
+            inset: 0;
+            background: #FFF5E6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 20000;
+            transition: opacity 0.5s ease;
+        }
+
+        .start-screen.hidden { opacity: 0; pointer-events: none; }
+        .start-title { font-size: 4rem; color: #333; margin-bottom: 40px; }
         
-            .controls.hidden {
-                transform: translateX(120%); /* Joga para fora da tela */
-                opacity: 0;
-                pointer-events: none;
-            }
-        
-            /* Estilo dos Botões */
-            .btn {
-                background: rgba(255, 255, 255, 0.9);
-                color: #333;
-                border: 2px solid #FF6633;
-                padding: 10px 20px;
-                border-radius: 30px;
-                cursor: pointer;
-                font-weight: bold;
-                font-size: 14px;
-                text-decoration: none;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 8px;
-                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-                min-width: 140px;
-                transition: all 0.2s;
-            }
-        
-            .btn:hover {
-                background: #FF6633;
-                color: white;
-                transform: scale(1.05);
-            }
-        
-            .btn-primary {
-                background: #FF6633;
-                color: white;
-            }
-        
-            /* Botão Flutuante (Menu Hamburguer) */
-            .menu-toggle {
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                background: #FF6633;
-                color: white;
-                border: none;
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                font-size: 24px;
-                cursor: pointer;
-                z-index: 10001;
-                display: none; /* Só aparece quando o menu fecha */
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 4px 15px rgba(255,102,51,0.4);
-            }
-        
-            .menu-toggle.active {
-                display: flex;
-            }
-        
-            /* Título Flutuante */
-            .poem-title {
-                position: fixed;
-                top: 30px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(255,255,255,0.9);
-                padding: 10px 30px;
-                border-radius: 50px;
-                font-size: 2rem;
-                color: #333;
-                z-index: 9999;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-                transition: top 0.5s ease, opacity 0.5s ease;
-                white-space: nowrap;
-            }
-        
-            .poem-title.hidden {
-                top: -100px;
-                opacity: 0;
-            }
-        
-            /* Tela de Início (Capa) */
-            .start-screen {
-                position: fixed;
-                inset: 0;
-                background: #FFF5E6;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                z-index: 20000;
-                transition: opacity 0.5s ease;
-            }
-        
-            .start-screen.hidden {
-                opacity: 0;
-                pointer-events: none;
-            }
-        
-            .start-title {
-                font-size: 4rem;
-                color: #333;
-                margin-bottom: 40px;
-            }
-        
-            .start-btn {
-                background: linear-gradient(135deg, #FF6633, #FF9966);
-                color: white;
-                border: none;
-                padding: 20px 50px;
-                border-radius: 50px;
-                font-size: 1.5rem;
-                cursor: pointer;
-                box-shadow: 0 10px 25px rgba(255,102,51,0.3);
-                transition: transform 0.2s;
-            }
-        
-            .start-btn:hover {
-                transform: scale(1.05);
-            }
-        
-            /* Indicador de Zoom (Aparece no meio da tela) */
-            .zoom-indicator {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: rgba(0,0,0,0.8);
-                color: white;
-                padding: 20px 40px;
-                border-radius: 15px;
-                font-size: 2rem;
-                font-weight: bold;
-                opacity: 0;
-                pointer-events: none;
-                transition: opacity 0.3s;
-                z-index: 30000;
-            }
-            .zoom-indicator.show { opacity: 1; }
-        
-            /* =AJUSTES PARA CELULAR= */
-            @media (max-width: 600px) {
-                .poem-title { font-size: 1.5rem; padding: 8px 20px; top: 15px; }
-                .start-title { font-size: 2.5rem; }
-                .start-btn { font-size: 1.2rem; padding: 15px 40px; }
-                
-                /* Botões menores no celular */
-                .btn { padding: 8px 15px; font-size: 12px; min-width: 110px; }
-                
-                /* Mais espaço para o player no celular */
-                #player-wrapper { padding: 10px; }
-            }
-        </style>
+        .start-btn {
+            background: linear-gradient(135deg, #FF6633, #FF9966);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255,102,51,0.3);
+            transition: transform 0.2s;
+        }
+        .start-btn:hover { transform: scale(1.05); }
+
+        .info { margin-top: 30px; color: #666; font-size: 1rem; text-align: center; max-width: 600px; }
+
+        .zoom-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 15px;
+            font-size: 2rem;
+            font-weight: bold;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 30000;
+        }
+        .zoom-indicator.show { opacity: 1; }
+
+        /* =AJUSTES PARA CELULAR= */
+        @media (max-width: 600px) {
+            .poem-title { font-size: 1.5rem; padding: 8px 20px; top: 15px; }
+            .start-title { font-size: 2.5rem; }
+            .start-btn { font-size: 1.2rem; padding: 15px 40px; }
+            .btn { padding: 8px 15px; font-size: 12px; min-width: 110px; }
+            #player-wrapper { padding: 10px; }
+        }
+    </style>
 </head>
 <body>
     <!-- Título -->
