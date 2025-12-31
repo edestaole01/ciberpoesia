@@ -801,60 +801,94 @@
             background: linear-gradient(90deg, transparent, #DDD, transparent);
         }
         
-        /* Responsivo */
-        @media (max-width: 1200px) {
-            .carousel-item {
-                flex: 0 0 calc(33.333% - 27px);
-                min-width: calc(33.333% - 27px);
-            }
-            .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+/* =========================================
+           RESPONSIVIDADE (Mobile e Tablets)
+           ========================================= */
         
-        @media (max-width: 900px) {
-            .carousel-item {
-                flex: 0 0 calc(50% - 20px);
-                min-width: calc(50% - 20px);
-            }
-            .logo-title {
-                font-size: 3rem;
-            }
-            .zoom-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        /* Tablets e telas médias (até 1024px) */
+        @media (max-width: 1024px) {
+            .container { padding: 0 15px; }
+            .carousel-item { flex: 0 0 33.33%; min-width: 33.33%; } /* 3 itens */
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .zoom-grid { grid-template-columns: repeat(2, 1fr); }
+            .logo-title { font-size: 4rem; }
         }
-        
-        @media (max-width: 640px) {
-            .carousel-item {
-                flex: 0 0 100%;
-                min-width: 100%;
+
+        /* Tablets menores (até 768px) */
+        @media (max-width: 768px) {
+            .carousel-item { flex: 0 0 50%; min-width: 50%; } /* 2 itens */
+            .section-title { font-size: 2rem; }
+            
+            /* Ajuste dos botões laterais do carrossel */
+            .carousel-wrapper { padding: 0 50px; }
+            .carousel-btn { width: 40px; height: 40px; font-size: 1.2rem; }
+        }
+
+        /* Celulares (até 480px) - O ajuste mais importante */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px 5px; /* Menos borda no corpo */
             }
-            .carousel-wrapper {
-                padding: 0 80px;
+
+            .header { margin-bottom: 50px; }
+
+            /* Simplifica o logo no celular */
+            .logo-title { 
+                font-size: 2.5rem; 
+                word-wrap: break-word; /* Evita quebra se a palavra for longa */
             }
-            .logo-title {
-                font-size: 2rem;
-            }
-            .color-box {
-                display: none;
-            }
-            .gallery-grid,
-            .zoom-grid {
-                grid-template-columns: 1fr;
+            .color-box { display: none; } /* Esconde os blocos 3D para limpar a tela */
+            .authors { font-size: 0.9rem; }
+
+            /* Carrossel: 1 item por vez */
+            .carousel-item { 
+                flex: 0 0 100%; 
+                min-width: 100%; 
+                padding: 0 10px;
             }
             
-            .zoom-card-banner {
-                padding: 30px 20px;
-            }
-            
-            .zoom-card-banner h2 {
-                font-size: 2rem;
-            }
-            
-            .zoom-description {
+            /* Ajuste fino nos botões do carrossel para não atrapalhar o conteúdo */
+            .carousel-btn {
+                background: rgba(255, 102, 51, 0.9); /* Um pouco transparente */
+                width: 35px;
+                height: 35px;
                 font-size: 1rem;
             }
+            .carousel-wrapper { padding: 0 35px; } /* Aproxima as setas */
+
+            /* Transformar Grids em Coluna Única */
+            .gallery-grid, 
+            .zoom-grid { 
+                grid-template-columns: 1fr; /* Uma coluna */
+                gap: 30px;
+            }
+
+            /* Cartões */
+            .gallery-card, 
+            .zoom-card, 
+            .layout-card {
+                padding: 30px 20px;
+            }
+
+            /* Banner Zoom */
+            .zoom-card-banner { padding: 30px 20px; }
+            .zoom-card-banner h2 { font-size: 1.8rem; }
+
+            /* Botões maiores para toque (dedo) */
+            .layout-button, 
+            .gallery-button, 
+            .zoom-button, 
+            .zoom-button-banner {
+                width: 100%; /* Botão ocupa toda largura */
+                padding: 15px 0;
+                display: block;
+            }
+            
+            /* Ajustes visuais nos ícones */
+            .number-box { width: 60px; height: 60px; font-size: 2rem; }
+            .zoom-icon { font-size: 4rem; }
+            
+            .footer { padding: 20px; margin-top: 40px; }
         }
     </style>
 </head>
