@@ -4,9 +4,27 @@
     <meta charset="UTF-8">
     <title>Ciber & Poesia - Xícara</title>
     <style>
-        body { margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; background: #fff; font-family: sans-serif; }
-        #player { width: 550px; height: 390px; border: 1px solid #ddd; background: #fafafa; }
-        </style>
+        body { 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; /* Garante altura total mesmo no celular */
+            background: #fff; 
+            font-family: sans-serif;
+            padding: 20px; /* Margem de segurança para não colar na borda do celular */
+            box-sizing: border-box;
+        }
+
+        #player { 
+            width: 100%; /* Ocupa toda a largura disponível... */
+            max-width: 550px; /* ...até chegar no máximo de 550px */
+            aspect-ratio: 550 / 390; /* Mantém a proporção exata do original */
+            border: 1px solid #ddd; 
+            background: #fafafa; 
+        }
+    </style>
 </head>
 <body>
 
