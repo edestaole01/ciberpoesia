@@ -4,224 +4,241 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chá - Ciberpoema</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+    Com certeza. Aqui está o bloco <style> completo e corrigido.
+
+        Ele inclui:
         
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: #FFF5E6;
-        }
+        Ajuste do Player: Usa aspect-ratio para manter a proporção exata do desenho (550x390) e max-width para não estourar a tela.
         
-        /* Menu de controles - CANTO INFERIOR DIREITO */
-        .controls {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            z-index: 10000;
-        }
+        Força Bruta no Ruffle: Obriga o componente do Ruffle a ocupar 100% da caixa, sem sobrar bordas.
         
-        .btn {
-            background: rgba(0,0,0,0.85);
-            color: white;
-            border: 2px solid #FF6633;
-            padding: 12px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-            transition: all 0.3s;
-            text-align: center;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            backdrop-filter: blur(10px);
-            min-width: 140px;
-        }
+        Interface: Mantém o estilo dos seus botões, título e tela de início.
         
-        .btn:hover {
-            background: #FF6633;
-            transform: translateX(-5px);
-            box-shadow: 0 5px 20px rgba(255,102,51,0.5);
-        }
+        Pode copiar tudo isso e substituir o que está entre <head> e </head>:
         
-        .btn-primary {
-            background: #FF6633;
-            border-color: #FF6633;
-        }
+        HTML
         
-        .btn-primary:hover {
-            background: #FF5522;
-            border-color: #FF5522;
-        }
+        <style>
+            /* =ZERA TUDO E DEFINE O FUNDO= */
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            
+            html, body {
+                width: 100%;
+                height: 100%; /* Garante altura total */
+                overflow: hidden; /* Impede rolagem indesejada */
+                background: #FFF5E6; /* Cor creme do fundo original */
+                font-family: 'Courier New', monospace; /* Fonte estilo máquina de escrever */
+            }
         
-        /* Botão menu toggle (esconder/mostrar) */
-        .menu-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.85);
-            color: white;
-            border: 2px solid #FF6633;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 20px;
-            z-index: 10001;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
+            /* =CONTAINER DO PLAYER (O segredo da responsividade)= */
+            #player-wrapper {
+                position: absolute;
+                inset: 0; /* Ocupa a tela toda */
+                display: flex;
+                align-items: center;     /* Centraliza verticalmente */
+                justify-content: center; /* Centraliza horizontalmente */
+                padding: 15px; /* Margem de segurança para não colar na borda do celular */
+                z-index: 1;
+            }
         
-        .menu-toggle:hover {
-            background: #FF6633;
-            transform: scale(1.1);
-        }
+            /* =A CAIXA DO FLASH= */
+            #player {
+                /* LARGURA: Tenta ser 100% da tela, mas para em 550px (tamanho original) */
+                width: 100%;
+                max-width: 550px; 
+                
+                /* PROPORÇÃO: Calcula a altura automaticamente baseada na largura */
+                /* Isso impede que o desenho fique esticado ou achatado */
+                aspect-ratio: 550 / 390; 
+                
+                background: #fafafa; /* Fundo enquanto carrega */
+                border: 1px solid #ddd;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* Sombra suave */
+                
+                /* Garante que o conteúdo interno fique no meio */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+            }
         
-        .menu-toggle.active {
-            display: flex;
-        }
+            /* =FORÇA O RUFFLE A OBEDECER= */
+            /* Isso é crucial para o celular: manda o player esticar dentro da caixa */
+            ruffle-player {
+                width: 100% !important;
+                height: 100% !important;
+                display: block;
+            }
         
-        .controls.hidden {
-            transform: translateX(200px);
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        /* Título */
-        .poem-title {
-            position: fixed;
-            top: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 3rem;
-            color: #333;
-            background: rgba(255,255,255,0.95);
-            padding: 15px 40px;
-            border-radius: 40px;
-            z-index: 9999;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            transition: all 0.5s;
-        }
-        
-        .poem-title.hidden {
-            opacity: 0;
-            transform: translateX(-50%) translateY(-100px);
-        }
-        
-        /* Player */
-        #player-wrapper {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        
-        #player {
-            transform-origin: center center;
-            transition: transform 0.3s ease;
-        }
-        
-        /* Zoom classes */
-        #player.zoom-1 { transform: scale(1.5); }
-        #player.zoom-2 { transform: scale(2.0); }
-        #player.zoom-3 { transform: scale(2.5); }
-        #player.zoom-4 { transform: scale(3.0); }
-        #player.zoom-5 { transform: scale(3.5); }
-        #player.zoom-max { transform: scale(4.0); }
-        
-        /* Tela de início */
-        .start-screen {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, #FFF5E6, #FFF);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.5s;
-        }
-        
-        .start-screen.hidden { opacity: 0; pointer-events: none; }
-        
-        .start-title {
-            font-size: 4rem;
-            color: #333;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        
-        .start-btn {
-            background: linear-gradient(135deg, #FF6633, #FF9966);
-            color: white;
-            border: none;
-            padding: 25px 60px;
-            border-radius: 50px;
-            font-size: 1.8rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(255,102,51,0.4);
-            transition: all 0.3s;
-        }
-        
-        .start-btn:hover { transform: scale(1.1); }
-        
-        .info {
-            margin-top: 30px;
-            color: #666;
-            font-size: 1rem;
-            text-align: center;
-            max-width: 600px;
-        }
-        
-        /* Indicador de zoom */
-        .zoom-indicator {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.9);
-            color: white;
-            padding: 30px 50px;
-            border-radius: 20px;
-            font-size: 2.5rem;
-            font-weight: bold;
-            z-index: 10002;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-        }
-        
-        .zoom-indicator.show { opacity: 1; }
-        
-        /* Responsivo */
-        @media (max-width: 768px) {
-            .start-title { font-size: 2.5rem; }
-            .start-btn { font-size: 1.3rem; padding: 20px 40px; }
-            .poem-title { font-size: 2rem; padding: 10px 25px; }
+            /* =INTERFACE (BOTÕES E MENUS)= */
+            
+            /* Menu de controles (Canto Inferior Direito) */
             .controls {
-                bottom: 10px;
-                right: 10px;
-                gap: 5px;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                z-index: 10000;
+                transition: transform 0.3s ease, opacity 0.3s ease;
             }
+        
+            .controls.hidden {
+                transform: translateX(120%); /* Joga para fora da tela */
+                opacity: 0;
+                pointer-events: none;
+            }
+        
+            /* Estilo dos Botões */
             .btn {
-                padding: 10px 15px;
-                font-size: 12px;
-                min-width: 120px;
+                background: rgba(255, 255, 255, 0.9);
+                color: #333;
+                border: 2px solid #FF6633;
+                padding: 10px 20px;
+                border-radius: 30px;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 14px;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                min-width: 140px;
+                transition: all 0.2s;
             }
-        }
-    </style>
+        
+            .btn:hover {
+                background: #FF6633;
+                color: white;
+                transform: scale(1.05);
+            }
+        
+            .btn-primary {
+                background: #FF6633;
+                color: white;
+            }
+        
+            /* Botão Flutuante (Menu Hamburguer) */
+            .menu-toggle {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: #FF6633;
+                color: white;
+                border: none;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                font-size: 24px;
+                cursor: pointer;
+                z-index: 10001;
+                display: none; /* Só aparece quando o menu fecha */
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 15px rgba(255,102,51,0.4);
+            }
+        
+            .menu-toggle.active {
+                display: flex;
+            }
+        
+            /* Título Flutuante */
+            .poem-title {
+                position: fixed;
+                top: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(255,255,255,0.9);
+                padding: 10px 30px;
+                border-radius: 50px;
+                font-size: 2rem;
+                color: #333;
+                z-index: 9999;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                transition: top 0.5s ease, opacity 0.5s ease;
+                white-space: nowrap;
+            }
+        
+            .poem-title.hidden {
+                top: -100px;
+                opacity: 0;
+            }
+        
+            /* Tela de Início (Capa) */
+            .start-screen {
+                position: fixed;
+                inset: 0;
+                background: #FFF5E6;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                z-index: 20000;
+                transition: opacity 0.5s ease;
+            }
+        
+            .start-screen.hidden {
+                opacity: 0;
+                pointer-events: none;
+            }
+        
+            .start-title {
+                font-size: 4rem;
+                color: #333;
+                margin-bottom: 40px;
+            }
+        
+            .start-btn {
+                background: linear-gradient(135deg, #FF6633, #FF9966);
+                color: white;
+                border: none;
+                padding: 20px 50px;
+                border-radius: 50px;
+                font-size: 1.5rem;
+                cursor: pointer;
+                box-shadow: 0 10px 25px rgba(255,102,51,0.3);
+                transition: transform 0.2s;
+            }
+        
+            .start-btn:hover {
+                transform: scale(1.05);
+            }
+        
+            /* Indicador de Zoom (Aparece no meio da tela) */
+            .zoom-indicator {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0,0,0,0.8);
+                color: white;
+                padding: 20px 40px;
+                border-radius: 15px;
+                font-size: 2rem;
+                font-weight: bold;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s;
+                z-index: 30000;
+            }
+            .zoom-indicator.show { opacity: 1; }
+        
+            /* =AJUSTES PARA CELULAR= */
+            @media (max-width: 600px) {
+                .poem-title { font-size: 1.5rem; padding: 8px 20px; top: 15px; }
+                .start-title { font-size: 2.5rem; }
+                .start-btn { font-size: 1.2rem; padding: 15px 40px; }
+                
+                /* Botões menores no celular */
+                .btn { padding: 8px 15px; font-size: 12px; min-width: 110px; }
+                
+                /* Mais espaço para o player no celular */
+                #player-wrapper { padding: 10px; }
+            }
+        </style>
 </head>
 <body>
     <!-- Título -->
@@ -310,8 +327,7 @@
                 quality: "high"
             });
             
-            // Auto-zoom 200%
-            setTimeout(() => setZoom(2), 1000);
+            
         }
         
         function setZoom(level) {
